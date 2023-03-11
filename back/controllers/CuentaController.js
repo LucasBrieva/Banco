@@ -5,6 +5,8 @@ var Cliente = require('../models/cliente');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('../helpers/jwt');
 var fsHelper = require('../helpers/fsHelper');
+const regex = /^[0-9]+$/;
+//#region Exports
 
 const registro_cuenta = async function (req, res) {
     var cuentas_arr = [];
@@ -15,9 +17,9 @@ const registro_cuenta = async function (req, res) {
     if (validate_info(data)) {
         try {
             cuentas_arr = await Cuenta.find();
-            msj_validacion = validate_cuentas(cuentas_arr, data);
+            msj_validacion = validate_data_cuentas(cuentas_arr, data);
             if (msj_validacion === "") {
-                cliente = await Cliente.findOne({ email: data.cliente });
+                cliente = await Cliente.findOne({ email: data.cliente.toLowerCase() });
                 data.cliente = cliente._id;
                 if (cliente.tipo == "normal") {
                     if (data.tipo == "cc" || data.tipo == "cau") {
@@ -45,7 +47,10 @@ const registro_cuenta = async function (req, res) {
                     }
                 }
             }
-
+            else {
+                fsHelper.add_log("CuentaController.registro_cuenta", msj_validacion);
+                res.status(400).send({ message: msj_validacion, data: undefined });
+            }
         }
         catch {
             fsHelper.add_log("CuentaController.registro_cuenta", "ServerError: Posiblemente falten datos");
@@ -58,12 +63,26 @@ const registro_cuenta = async function (req, res) {
     }
 }
 
+const obtener_cuentas_cliente = async function (req, res) {
+    if (req.user) {
+        let cliente_id = req.params["clienteId"];
+        let reg = await Cuenta.find({ cliente: cliente_id });
+        res.status(200).send({ data: reg });
+    } else {
+        fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
+        res.status(500).send({ message: 'NoAccess' })
+    }
+}
+
+//#endregion
+
+//#region Functions
 
 function validate_info(data) {
     if (data.tipo != undefined && data.cbu != undefined && data.alias != undefined &&
         data.descubierto != undefined && data.nroCuenta != undefined && data.cliente != undefined) {
         if (is_null_or_empty(data)) {
-            if (data.tipo === "cc" || data.tipo === "ca" || data.tipo === "cch" || data.tipo === "cau") {
+            if (data.tipo.toLowerCase() === "cc" || data.tipo.toLowerCase() === "ca" || data.tipo.toLowerCase() === "cch" || data.tipo.toLowerCase() === "cau") {
                 return true;
             }
         }
@@ -79,8 +98,10 @@ function is_null_or_empty(data) {
     }
     return true;
 }
-function validate_cuentas(array, data) {
+function validate_data_cuentas(array, data) {
     var msj = "";
+    
+
     array.forEach(e => {
         if (e.cbu === data.cbu) {
             msj += "El CBU ya existe. ";
@@ -92,8 +113,14 @@ function validate_cuentas(array, data) {
             msj += "El número de cuenta ya existe. ";
         }
     });
+    if(!regex.test(data.cbu)) msj += "El cbu solo puede contener números. "
+    if(data.cbu.length != 22) msj += "El cbu debe contener exactamente 22 números. "
     return msj;
 }
+
+//#endregion
+
 module.exports = {
-    registro_cuenta
+    registro_cuenta,
+    obtener_cuentas_cliente
 }

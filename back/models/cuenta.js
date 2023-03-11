@@ -11,7 +11,8 @@ var CuentaSchema = Schema({
     cbu: { type: String, required: true },
     alias: { type: String, required: true },
     descubierto: { type: Number, required: true },
-    nroCuenta: { type: String, required: true }
+    nroCuenta: { type: String, required: true },
+    saldo: {type: Number, required: false, default: 0}
 });
 
 module.exports = mongoose.model('cuenta', CuentaSchema);
