@@ -22,7 +22,7 @@ export class ClienteService {
     let headers = new HttpHeaders({'Content-Type':'application/json','Authorization': token});
     return this._http.get(this.url+'obtener_cliente_admin/' + id, {headers:headers});
   }
-
+  
   //#endregion
   
   //#region POST

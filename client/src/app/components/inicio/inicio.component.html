@@ -4,3 +4,32 @@
     <h1 class="mt-3 mt-md-4 pt-5">Inicio</h1>
 </div>
 
+<div class="row">
+    <div class="main-box col-5 ml-5" *ngFor="let item of cuentas" (click)="test()">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <h2 class="mb-2">$ {{item.saldo}}</h2>
+                </div>
+                <div class="col-5">
+                    <h4> {{item.nroCuenta}}</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <span>Tipo de cuenta: </span>
+                    <span class="d-block mb-3 text-muted" *ngIf="item.tipo == 'ca'">Caja Ahorros Pesos</span>
+                    <span class="d-block mb-3 text-muted" *ngIf="item.tipo == 'cc'">Cuenta Corriente</span>
+                    <span class="d-block mb-3 text-muted" *ngIf="item.tipo == 'cch'">Cuenta Cheques</span>
+                    <span class="d-block mb-3 text-muted" *ngIf="item.tipo == 'cau'">Caja Ahorros Dolares</span>
+                </div>
+                <div class="col-2">
+                    <span>CBU:
+                    </span>
+                    <span>{{item.cbu}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
