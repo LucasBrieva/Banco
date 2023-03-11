@@ -19,8 +19,9 @@ export class InicioComponent implements OnInit {
     this.url = GLOBAL.url;
     this.token = localStorage.getItem('token');
     this.id_cliente = localStorage.getItem('_id');
-    this._cuentaService.obtener_cuentas_cliente(this.id_cliente, this.token).subscribe(
+    this._cuentaService.obtener_cuenta_principal_cliente(this.id_cliente, this.token).subscribe(
       res=>{
+        debugger;
         this.cuentas = res.data;
       },
       err=>{

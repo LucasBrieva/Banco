@@ -12,7 +12,8 @@ var CuentaSchema = Schema({
     alias: { type: String, required: true },
     descubierto: { type: Number, required: true },
     nroCuenta: { type: String, required: true },
-    saldo: {type: Number, required: false, default: 0}
+    saldo: {type: Number, required: false, default: 0},
+    principal: {type: Boolean, required: true}
 });
 
 module.exports = mongoose.model('cuenta', CuentaSchema);
