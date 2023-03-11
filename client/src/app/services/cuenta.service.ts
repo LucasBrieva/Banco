@@ -16,9 +16,9 @@ export class CuentaService {
   this.url = GLOBAL.url;
   }
 
-  obtener_cuentas_cliente(clienteId:any, token:any):Observable<any>{
+  obtener_cuenta_principal_cliente(clienteId:any, token:any):Observable<any>{
     let headers = new HttpHeaders({'Content-Type':'application/json','Authorization': token});
-    return this._http.get(this.url+'obtener_cuentas_cliente/' + clienteId, {headers:headers});
+    return this._http.get(this.url+'obtener_cuenta_principal_cliente/' + clienteId, {headers:headers});
   }
 
 }

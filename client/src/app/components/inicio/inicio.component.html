@@ -9,7 +9,8 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-6">
-                    <h2 class="mb-2">$ {{item.saldo}}</h2>
+                    <h2 class="mb-2" *ngIf="item.saldo != null">$ {{item.saldo}}</h2>
+                    <h2 class="mb-2" *ngIf="item.saldo == null">$ 0</h2>
                 </div>
                 <div class="col-5">
                     <h4> {{item.nroCuenta}}</h4>

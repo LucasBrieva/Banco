@@ -19,32 +19,28 @@ const registro_cuenta = async function (req, res) {
             cuentas_arr = await Cuenta.find();
             msj_validacion = validate_data_cuentas(cuentas_arr, data);
             if (msj_validacion === "") {
-                cliente = await Cliente.findOne({ email: data.cliente.toLowerCase() });
+                cliente = await Cliente.find({ email: data.cliente.toLowerCase() });
                 data.cliente = cliente._id;
-                if (cliente.tipo == "normal") {
-                    if (data.tipo == "cc" || data.tipo == "cau") {
-                        fsHelper.add_log("CuentaController.registro_cuenta", "La cuenta no puede tener dichas cuentas, actualice a VIP");
-                        res.status(400).send({ message: 'La cuenta no puede tener dichas cuentas, actualice a VIP', data: undefined });
+                if (cliente.tipo == "normal" && data.tipo == "cc" || data.tipo == "cau") {
+                    fsHelper.add_log("CuentaController.registro_cuenta", "La cuenta no puede tener dichas cuentas, actualice a VIP");
+                    res.status(400).send({ message: 'La cuenta no puede tener dichas cuentas, actualice a VIP', data: undefined });
+                }
+                cuentas_arr = await Cuenta.find({ cliente: data.cliente, tipo: data.tipo });
+                if (cuentas_arr.length == 0) {
+                    if (data.principal) {
+                        let cuentas = await Cuenta.find({ cliente: data.cliente })
+                        cuentas.forEach(async element => {
+                            if (element.principal) await Cuenta.findByIdAndUpdate({ _id: element._id }, { principal: false });
+                        });
                     }
-                    cuentas_arr = await Cuenta.find({ cliente: cliente._id, tipo: data.tipo });
-                    if (cuentas_arr.length == 0) {
-                        var reg = await Cuenta.create(data);
-                        res.status(200).send({ data: reg });
-                    }
-                    else {
-                        fsHelper.add_log("CuentaController.registro_cuenta", "El cliente ya tiene una cuenta de este tipo");
-                        res.status(400).send({ message: 'El cliente ya tiene una cuenta de este tipo', data: undefined });
-                    }
-                } else {//VIP
-                    cuentas_arr = await Cuenta.find({ cliente: cliente._id, tipo: cliente.tipo });
-                    if (cuentas_arr.length == 0) {
-                        var reg = await Cuenta.create(data);
-                        res.status(200).send({ data: reg });
-                    }
-                    else {
-                        fsHelper.add_log("CuentaController.registro_cuenta", "El cliente ya tiene una cuenta de este tipo");
-                        res.status(400).send({ message: 'El cliente ya tiene una cuenta de este tipo', data: undefined });
-                    }
+                    data.nroCuenta = data.nroCuenta.toUpperCase();
+                    data.alias = data.alias.toUpperCase();
+                    var reg = await Cuenta.create(data);
+                    res.status(200).send({ data: reg });
+                }
+                else {
+                    fsHelper.add_log("CuentaController.registro_cuenta", "El cliente ya tiene una cuenta de este tipo");
+                    res.status(400).send({ message: 'El cliente ya tiene una cuenta de este tipo', data: undefined });
                 }
             }
             else {
@@ -63,10 +59,10 @@ const registro_cuenta = async function (req, res) {
     }
 }
 
-const obtener_cuentas_cliente = async function (req, res) {
+const obtener_cuenta_principal_cliente = async function (req, res) {
     if (req.user) {
         let cliente_id = req.params["clienteId"];
-        let reg = await Cuenta.find({ cliente: cliente_id });
+        let reg = await Cuenta.find({ cliente: cliente_id, principal: true });
         res.status(200).send({ data: reg });
     } else {
         fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
@@ -80,7 +76,7 @@ const obtener_cuentas_cliente = async function (req, res) {
 
 function validate_info(data) {
     if (data.tipo != undefined && data.cbu != undefined && data.alias != undefined &&
-        data.descubierto != undefined && data.nroCuenta != undefined && data.cliente != undefined) {
+        data.descubierto != undefined && data.nroCuenta != undefined && data.cliente != undefined && data.principal != undefined) {
         if (is_null_or_empty(data)) {
             if (data.tipo.toLowerCase() === "cc" || data.tipo.toLowerCase() === "ca" || data.tipo.toLowerCase() === "cch" || data.tipo.toLowerCase() === "cau") {
                 return true;
@@ -91,17 +87,15 @@ function validate_info(data) {
 }
 function is_null_or_empty(data) {
     if (data.tipo === null && data.cbu === null && data.alias === null &&
-        data.descubierto === null && data.nroCuenta === null && data.cliente === null ||
+        data.descubierto === null && data.nroCuenta === null && data.cliente === null && data.principal === null ||
         Object.keys(data.tipo).length === 0 && Object.keys(data.cbu).length === 0 && Object.keys(data.alias).length === 0 &&
-        Object.keys(data.descubierto).length === 0 && Object.keys(data.cliente).length === 0) {
+        Object.keys(data.descubierto).length === 0 && Object.keys(data.cliente).length === 0 && Object.keys(data.principal).length === 0) {
         return false;
     }
     return true;
 }
 function validate_data_cuentas(array, data) {
     var msj = "";
-    
-
     array.forEach(e => {
         if (e.cbu === data.cbu) {
             msj += "El CBU ya existe. ";
@@ -113,8 +107,8 @@ function validate_data_cuentas(array, data) {
             msj += "El número de cuenta ya existe. ";
         }
     });
-    if(!regex.test(data.cbu)) msj += "El cbu solo puede contener números. "
-    if(data.cbu.length != 22) msj += "El cbu debe contener exactamente 22 números. "
+    if (!regex.test(data.cbu)) msj += "El cbu solo puede contener números. "
+    if (data.cbu.length != 22) msj += "El cbu debe contener exactamente 22 números. "
     return msj;
 }
 
@@ -122,5 +116,5 @@ function validate_data_cuentas(array, data) {
 
 module.exports = {
     registro_cuenta,
-    obtener_cuentas_cliente
+    obtener_cuenta_principal_cliente
 }
