@@ -66,8 +66,8 @@ const obtener_cuenta_principal_cliente = async function (req, res) {
         let reg = await Cuenta.find({ cliente: cliente_id, principal: true });
         res.status(200).send({ data: reg });
     } else {
-        fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
-        res.status(500).send({ message: 'NoAccess' })
+        fsHelper.add_log("CuentaController.obtener_cuenta_principal_cliente", "Usuario no identificado");
+        res.status(500).send({ message: 'NoAccess: Usuario no identificado' })
     }
 }
 
@@ -77,8 +77,19 @@ const obtener_cuentas_cliente = async function (req, res) {
         let reg = await Cuenta.find({ cliente: cliente_id });
         res.status(200).send({ data: reg });
     } else {
-        fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
-        res.status(500).send({ message: 'NoAccess' })
+        fsHelper.add_log("CuentaController.obtener_cuentas_cliente", "Usuario no identificado");
+        res.status(500).send({ message: 'NoAccess: Usuario no identificado' })
+    }
+}
+
+const obtener_detalle_cuenta = async function (req, res) {
+    if (req.user) {
+        let id = req.params["id"];
+        let reg = await Cuenta.findById({ _id: id }).populate('cliente');
+        res.status(200).send({ data: reg });
+    } else {
+        fsHelper.add_log("CuentaController.obtener_detalle_cuenta", "Usuario no identificado");
+        res.status(500).send({ message: 'NoAccess: Usuario no identificado' })
     }
 }
 
@@ -129,5 +140,6 @@ function validate_data_cuentas(array, data) {
 module.exports = {
     registro_cuenta,
     obtener_cuenta_principal_cliente,
-    obtener_cuentas_cliente
+    obtener_cuentas_cliente,
+    obtener_detalle_cuenta
 }

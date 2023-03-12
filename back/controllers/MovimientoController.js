@@ -50,6 +50,18 @@ const obtener_movimientos_cuenta_principal = async function (req, res) {
     }
 }
 
+const obtener_movimientos_cuenta_id = async function (req, res) {
+    if (req.user) {
+        let idCuenta = req.params["idCuenta"];
+        //TODO: Hacer prueba agregando array de movimiento a cuenta.
+        let movimientos = await Movimiento.find({cuenta: idCuenta}).limit(50);
+        res.status(200).send({ data: movimientos });
+    } else {
+        fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
+        res.status(500).send({ message: 'NoAccess' })
+    }
+}
+
 async function validateData(data, cuenta) {
     var msj = [];
     if (cuenta == undefined) {
@@ -127,5 +139,6 @@ async function validateData(data, cuenta) {
 
 module.exports = {
     registro_movimiento,
-    obtener_movimientos_cuenta_principal
+    obtener_movimientos_cuenta_principal,
+    obtener_movimientos_cuenta_id
 }

@@ -5,7 +5,7 @@
 </div>
 
 <div class="row">
-    <div class="main-box col-5 ml-5" *ngFor="let item of cuentas" (click)="test()">
+    <div class="main-box col-5 ml-5" *ngFor="let item of cuentas" [routerLink]="['/panel/cuentas/', item._id]">
         <div class="card-body">
             <div class="row">
                 <div class="col-6">
