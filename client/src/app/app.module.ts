@@ -15,6 +15,7 @@ import { IndexClienteComponent } from './components/clientes/index-cliente/index
 import { CreateClienteComponent } from './components/clientes/create-cliente/create-cliente.component';
 import { EditClienteComponent } from './components/clientes/edit-cliente/edit-cliente.component';
 import { IndexCuentasComponent } from './components/cuentas/index-cuentas/index-cuentas.component';
+import { DetalleCuentasComponent } from './components/cuentas/detalle-cuentas/detalle-cuentas.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { IndexCuentasComponent } from './components/cuentas/index-cuentas/index-
     CreateClienteComponent,
     EditClienteComponent,
     SidebarComponent,
-    IndexCuentasComponent
+    IndexCuentasComponent,
+    DetalleCuentasComponent
   ],
   imports: [
     BrowserModule,

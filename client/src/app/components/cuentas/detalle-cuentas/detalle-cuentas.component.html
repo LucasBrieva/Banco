@@ -1,0 +1,92 @@
+<app-sidebar></app-sidebar>
+
+<div class="border-bottom pt-5 pb-2 mt-lg-2 mb-5">
+    <div class="col-md-12">
+        <h1 class="mt-3 mt-md-4 pt-5">DETALLE CUENTA - {{cuenta.nroCuenta}}</h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="border-bottom  mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class=" mt-md-1 ">CLIENTE: {{cuenta.cliente.nombres | uppercase}} {{cuenta.cliente.apellidos | uppercase}}</h5>
+                </div>
+                <div class="col-md-4">
+                    <h5 class=" mt-md-1 ">DNI: {{cuenta.cliente.dni}}</h5>
+                </div>
+                <div class="col-md-4">
+                    <h5 class=" mt-md-1 ">TIPO CLIENTE: {{cuenta.cliente.tipo | uppercase }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <label>Saldo:&nbsp;&nbsp; </label>
+                <span *ngIf="cuenta.saldo != null"> <b>$ {{cuenta.saldo}} </b></span>
+                <span *ngIf="cuenta.saldo == null"> <b>$ 0 </b></span>
+            </div>
+            <div class="col-3">
+                <label>Tipo de cuenta:&nbsp;&nbsp; </label>
+                <span *ngIf="cuenta.tipo == 'ca'"> <b> Caja Ahorro Pesos </b></span>
+                <span *ngIf="cuenta.tipo == 'cc'"> <b> Cuenta Corriente </b></span>
+                <span *ngIf="cuenta.tipo == 'cch'"> <b> Cuenta Cheque </b></span>
+                <span *ngIf="cuenta.tipo == 'cau'"> <b> Caja Ahorro Dolares </b></span>
+            </div>
+            <div class="col-3">
+                <label>CBU:&nbsp;&nbsp; </label>
+                <span > <b> {{cuenta.cbu}} </b></span>
+            </div>
+            <div class="col-3">
+                <label>ALIAS:&nbsp;&nbsp; </label>
+                <span > <b> {{cuenta.alias | uppercase}} </b></span>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="col-md-12">
+            <table class="table table-sm">
+                <thead class="thead-dark">
+                    <tr>
+    
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Comentario</th>
+                        <th>Monto</th>
+    
+                    </tr>
+                </thead>
+                <ng-container *ngIf="movimientos.length == 0">
+                    <tbody>
+                        <tr>
+                            <td class="text-center" colspan="5">
+                                <span class="text-muted">No hay movimientos disponibles</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </ng-container>
+                <ng-container *ngIf="movimientos.length > 0">
+                    <tbody *ngFor="let item of movimientos; let indice = index">
+                        <tr>
+                            <td>{{item.createdAt | date:'dd/MM/yyyy'}}</td>
+                            <td>{{item.descripcion | slice:0:15}}</td>
+                            <td>{{item.comentario | slice:0:25}}</td>
+                            <td>
+                                <span style="color:green" *ngIf="item.isIngreso">
+                                    {{item.monto}}
+                                </span>
+                                <span style="color:red" *ngIf="!item.isIngreso">
+                                    {{item.monto}}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </ng-container>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer">
+        <a [routerLink]="['/panel/cuentas']"  class="btn btn-secondary">Regresar</a>
+    </div>
+</div>

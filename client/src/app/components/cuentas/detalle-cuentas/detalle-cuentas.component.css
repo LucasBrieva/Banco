@@ -1,0 +1,14 @@
+.main-box {
+    width: 100%;
+    padding: 16px 24px 16px 16px;
+    border-radius: 6px;
+    background-color: #2E3B4E;
+    margin-bottom: 15px;
+    border: 1px solid rgba(23,26,31,.04);
+    cursor: pointer;
+    -webkit-transition: all 1s;
+    transition: all 1s;
+}
+.white-letters{
+    color: white !important;
+}
