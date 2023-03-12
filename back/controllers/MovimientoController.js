@@ -63,7 +63,12 @@ const obtener_movimientos_cuenta_principal = async function (req, res) {
         let cliente_id = req.params["idCliente"];
         //TODO: Hacer prueba agregando array de movimiento a cuenta.
         let cuenta = await Cuenta.findOne({ cliente: cliente_id, principal: true });
-        let movimientos = await Movimiento.find({ cuenta: cuenta._id }).limit(5);
+        let movimientos = await Movimiento.find({
+            $or: [
+                { cuenta: cuenta._id },
+                { cbuDestino: cuenta.cbu }
+            ]
+        }).limit(5);
         res.status(200).send({ data: movimientos });
     } else {
         fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
@@ -120,7 +125,7 @@ const transferir = async function (req, res) {
                     saldo: Number(cuentaOrigen.saldo) - Number(data.monto),
                 });
                 var reg = await Movimiento.create(data);
-                res.status(200).send({data:reg});
+                res.status(200).send({ data: reg });
             }
             else {
                 fsHelper.add_log("CuentaController.transferir", msjValidacion);
