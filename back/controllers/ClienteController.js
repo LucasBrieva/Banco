@@ -16,6 +16,7 @@ const registro_cliente = async function (req, res) {
             bcrypt.hash(data.password, null, null, async function (err, hash) {
                 if (hash) {
                     data.password = hash;
+                    data.tipo = data.tipo.toLowerCase();
                     var reg = await Cliente.create(data);
                     res.status(200).send({
                         data: reg,
