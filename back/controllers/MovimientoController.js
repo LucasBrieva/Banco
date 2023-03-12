@@ -42,7 +42,7 @@ const obtener_movimientos_cuenta_principal = async function (req, res) {
         let cliente_id = req.params["idCliente"];
         //TODO: Hacer prueba agregando array de movimiento a cuenta.
         let cuenta = await Cuenta.findOne({ cliente: cliente_id, principal: true });
-        let movimientos = await Movimiento.find({cuenta: cuenta._id}).limit(5);
+        let movimientos = await Movimiento.find({ cuenta: cuenta._id }).limit(5);
         res.status(200).send({ data: movimientos });
     } else {
         fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
@@ -54,7 +54,23 @@ const obtener_movimientos_cuenta_id = async function (req, res) {
     if (req.user) {
         let idCuenta = req.params["idCuenta"];
         //TODO: Hacer prueba agregando array de movimiento a cuenta.
-        let movimientos = await Movimiento.find({cuenta: idCuenta}).limit(50);
+        let movimientos = await Movimiento.find({ cuenta: idCuenta }).limit(50);
+        res.status(200).send({ data: movimientos });
+    } else {
+        fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
+        res.status(500).send({ message: 'NoAccess' })
+    }
+}
+
+const obtener_movimientos_transferencias = async function (req, res) {
+    if (req.user) {
+        //TODO: Hacer prueba agregando array de movimiento a cuenta.
+        let movimientos = await Movimiento.find({
+            $or: [
+                { tipo: new RegExp(tipoMovimiento.tipoMovimiento.PROPIA, 'i') },
+                { tipo: new RegExp(tipoMovimiento.tipoMovimiento.TERCEROS, 'i') }
+            ]
+        }).limit(10);
         res.status(200).send({ data: movimientos });
     } else {
         fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
@@ -102,7 +118,7 @@ async function validateData(data, cuenta) {
                     if (cuentaDestino == undefined) {
                         msj.push("No existe el cbu ingresado, favor de verificar.");
                     }
-                    else if (!cuentaDestino.cliente.equals(cuenta.cliente) ) {
+                    else if (!cuentaDestino.cliente.equals(cuenta.cliente)) {
                         msj.push("El cbu al que intenta enviar no es propio, favor de verificar.");
                     }
                 }
@@ -129,8 +145,8 @@ async function validateData(data, cuenta) {
     if (data.isIngreso == undefined || data.isIngreso == null || data.isIngreso == "") {
         msj.push("Es necesario determinar si es un ingreso o un egreso de dinero.")
     }
-    else{
-        if(data.isIngreso.toString().toLowerCase() != "true" &&  data.isIngreso.toString().toLowerCase() != "false"){
+    else {
+        if (data.isIngreso.toString().toLowerCase() != "true" && data.isIngreso.toString().toLowerCase() != "false") {
             msj.push("El campo isIngreso debe ser un booleano, favor de verificar.")
         }
     }
@@ -140,5 +156,6 @@ async function validateData(data, cuenta) {
 module.exports = {
     registro_movimiento,
     obtener_movimientos_cuenta_principal,
-    obtener_movimientos_cuenta_id
+    obtener_movimientos_cuenta_id,
+    obtener_movimientos_transferencias
 }

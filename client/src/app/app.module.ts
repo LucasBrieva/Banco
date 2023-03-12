@@ -11,23 +11,19 @@ import { routing } from "./app.routing";
 import { InicioComponent } from './components/inicio/inicio.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { LoginComponent } from './components/login/login.component';
-import { IndexClienteComponent } from './components/clientes/index-cliente/index-cliente.component';
-import { CreateClienteComponent } from './components/clientes/create-cliente/create-cliente.component';
-import { EditClienteComponent } from './components/clientes/edit-cliente/edit-cliente.component';
 import { IndexCuentasComponent } from './components/cuentas/index-cuentas/index-cuentas.component';
 import { DetalleCuentasComponent } from './components/cuentas/detalle-cuentas/detalle-cuentas.component';
+import { IndexTransferenciasComponent } from './components/transferencias/index-transferencias/index-transferencias.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     InicioComponent,
     LoginComponent,
-    IndexClienteComponent,
-    CreateClienteComponent,
-    EditClienteComponent,
     SidebarComponent,
     IndexCuentasComponent,
-    DetalleCuentasComponent
+    DetalleCuentasComponent,
+    IndexTransferenciasComponent
   ],
   imports: [
     BrowserModule,

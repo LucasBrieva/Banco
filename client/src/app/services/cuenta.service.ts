@@ -40,5 +40,8 @@ export class CuentaService {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': token });
     return this._http.get(this.url + 'obtener_movimientos_cuenta_id/' + idCuenta, { headers: headers });
   }
-
+  obtener_movimientos_transferencias(token: any): Observable<any> {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': token });
+    return this._http.get(this.url + 'obtener_movimientos_transferencias', { headers: headers });
+  }
 }
