@@ -14,6 +14,7 @@ import { LoginComponent } from './components/login/login.component';
 import { IndexCuentasComponent } from './components/cuentas/index-cuentas/index-cuentas.component';
 import { DetalleCuentasComponent } from './components/cuentas/detalle-cuentas/detalle-cuentas.component';
 import { IndexTransferenciasComponent } from './components/transferencias/index-transferencias/index-transferencias.component';
+import { CrearTransferenciaComponent } from './components/transferencias/crear-transferencia/crear-transferencia.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { IndexTransferenciasComponent } from './components/transferencias/index-
     SidebarComponent,
     IndexCuentasComponent,
     DetalleCuentasComponent,
-    IndexTransferenciasComponent
+    IndexTransferenciasComponent,
+    CrearTransferenciaComponent
   ],
   imports: [
     BrowserModule,

@@ -19,9 +19,9 @@ const registro_cuenta = async function (req, res) {
             cuentas_arr = await Cuenta.find();
             msj_validacion = validate_data_cuentas(cuentas_arr, data);
             if (msj_validacion === "") {
-                cliente = await Cliente.find({ email: data.cliente.toLowerCase() });
+                cliente = await Cliente.findOne({ email: data.cliente.toLowerCase() });
                 data.cliente = cliente._id;
-                if (cliente.tipo == "normal" && data.tipo == "cc" || data.tipo == "cau") {
+                if (cliente.tipo == "normal" && (data.tipo == "cc" || data.tipo == "cau")) {
                     fsHelper.add_log("CuentaController.registro_cuenta", "La cuenta no puede tener dichas cuentas, actualice a VIP");
                     res.status(400).send({ message: 'La cuenta no puede tener dichas cuentas, actualice a VIP', data: undefined });
                 }
