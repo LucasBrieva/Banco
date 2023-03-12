@@ -71,6 +71,17 @@ const obtener_cuenta_principal_cliente = async function (req, res) {
     }
 }
 
+const obtener_cuentas_cliente = async function (req, res) {
+    if (req.user) {
+        let cliente_id = req.params["clienteId"];
+        let reg = await Cuenta.find({ cliente: cliente_id });
+        res.status(200).send({ data: reg });
+    } else {
+        fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
+        res.status(500).send({ message: 'NoAccess' })
+    }
+}
+
 //#endregion
 
 //#region Functions
@@ -117,5 +128,6 @@ function validate_data_cuentas(array, data) {
 
 module.exports = {
     registro_cuenta,
-    obtener_cuenta_principal_cliente
+    obtener_cuenta_principal_cliente,
+    obtener_cuentas_cliente
 }
