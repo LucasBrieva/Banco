@@ -21,6 +21,11 @@ export class CuentaService {
     return this._http.get(this.url + 'obtener_cuenta_principal_cliente/' + clienteId, { headers: headers });
   }
 
+  obtener_cuentas_cliente(clienteId: any, token: any): Observable<any> {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': token });
+    return this._http.get(this.url + 'obtener_cuentas_cliente/' + clienteId, { headers: headers });
+  }
+
   obtener_movimientos_cuenta_principal(clienteId: any, token: any): Observable<any> {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': token });
     return this._http.get(this.url + 'obtener_movimientos_cuenta_principal/' + clienteId, { headers: headers });

@@ -8,6 +8,7 @@ import { AdminGuard } from "./guards/admin.guard"
 import { IndexClienteComponent } from "./components/clientes/index-cliente/index-cliente.component";
 import { CreateClienteComponent } from "./components/clientes/create-cliente/create-cliente.component";
 import { EditClienteComponent } from "./components/clientes/edit-cliente/edit-cliente.component";
+import { IndexCuentasComponent } from "./components/cuentas/index-cuentas/index-cuentas.component";
 
 const appRoute : Routes =[
     {path: '', redirectTo: 'inicio', pathMatch:'full'},
@@ -18,6 +19,7 @@ const appRoute : Routes =[
         {path:'clientes', component:IndexClienteComponent, canActivate:[AdminGuard]},
         {path:'clientes/registro', component:CreateClienteComponent, canActivate:[AdminGuard]},
         {path:'clientes/:id', component:EditClienteComponent, canActivate:[AdminGuard]},
+        {path:'cuentas', component:IndexCuentasComponent, canActivate:[AdminGuard]},
 
     ]},
 
