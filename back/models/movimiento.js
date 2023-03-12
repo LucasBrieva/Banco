@@ -11,6 +11,7 @@ var MovimientoSchema = Schema({
     comentario: {type: String, required: false},
     cbuDestino: {type: String, required: false},
     isIngreso: {type: Boolean, required: true},
+    recibida: {type: Boolean, required: false}, //Valor que se setea al levantar el historial de movimientos
     createdAt: {type:Date, default: Date.now, require: true},
 });
 

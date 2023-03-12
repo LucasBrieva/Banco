@@ -81,10 +81,10 @@
                             <td>{{item.descripcion | slice:0:15}}</td>
                             <td>{{item.comentario | slice:0:25}}</td>
                             <td>
-                                <span style="color:green" *ngIf="item.isIngreso">
+                                <span style="color:green" *ngIf="item.recibida">
                                     {{item.monto}}
                                 </span>
-                                <span style="color:red" *ngIf="!item.isIngreso">
+                                <span style="color:red" *ngIf="!item.recibida">
                                     {{item.monto}}
                                 </span>
                             </td>
