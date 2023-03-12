@@ -8,6 +8,7 @@ import { AdminGuard } from "./guards/admin.guard"
 import { IndexCuentasComponent } from "./components/cuentas/index-cuentas/index-cuentas.component";
 import { DetalleCuentasComponent } from "./components/cuentas/detalle-cuentas/detalle-cuentas.component";
 import { IndexTransferenciasComponent } from "./components/transferencias/index-transferencias/index-transferencias.component";
+import { CrearTransferenciaComponent } from "./components/transferencias/crear-transferencia/crear-transferencia.component";
 
 const appRoute : Routes =[
     {path: '', redirectTo: 'inicio', pathMatch:'full'},
@@ -18,6 +19,7 @@ const appRoute : Routes =[
         {path:'cuentas', component:IndexCuentasComponent, canActivate:[AdminGuard]},
         {path:'cuentas/:id', component:DetalleCuentasComponent, canActivate:[AdminGuard]},
         {path:'transferencias', component:IndexTransferenciasComponent, canActivate:[AdminGuard]},
+        {path:'transferencias/crear', component:CrearTransferenciaComponent, canActivate:[AdminGuard]},
 
     ]},
 
