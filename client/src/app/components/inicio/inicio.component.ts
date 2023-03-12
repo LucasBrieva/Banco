@@ -12,7 +12,8 @@ export class InicioComponent implements OnInit {
   public url;
   public token;
   public id_cliente;
-  public cuentas:Array<any> = [];
+  public cuentas: Array<any> = [];
+  public movimientos: Array<any> = [];
   constructor(
     private _cuentaService: CuentaService
   ) {
@@ -20,19 +21,25 @@ export class InicioComponent implements OnInit {
     this.token = localStorage.getItem('token');
     this.id_cliente = localStorage.getItem('_id');
     this._cuentaService.obtener_cuenta_principal_cliente(this.id_cliente, this.token).subscribe(
-      res=>{
-        debugger;
+      res => {
         this.cuentas = res.data;
       },
-      err=>{
+      err => {
         console.log(err);
       }
-    )
-   }
+    );
+    this._cuentaService.obtener_movimientos_cuenta_principal(this.id_cliente, this.token).subscribe(
+      res => {
+        this.movimientos = res.data;
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
 
   ngOnInit(): void {
   }
-  test(){
-    debugger;
+  test() {
   }
 }
