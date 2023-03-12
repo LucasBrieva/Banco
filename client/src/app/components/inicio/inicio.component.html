@@ -1,7 +1,7 @@
 <app-sidebar></app-sidebar>
 
 <div class="border-bottom pt-5 pb-2 mt-lg-2 mb-5">
-    <h1 class="mt-3 mt-md-4 pt-5">Inicio</h1>
+    <h1 class="mt-3 mt-md-4 pt-5">VIAJEMOS JUNTOS</h1>
 </div>
 
 <div class="row">
@@ -35,7 +35,7 @@
     </div>
     <div class="col-md-6 ml-3">
         <table class="table table-sm">
-            <thead class="thead-dark">
+            <thead class="" style="background-color: #1b844c; color:white">
                 <tr>
 
                     <th>Fecha</th>
@@ -61,10 +61,10 @@
                         <td>{{item.descripcion | slice:0:15}}</td>
                         <td>{{item.comentario | slice:0:25}}</td>
                         <td>
-                            <span style="color:green" *ngIf="item.isIngreso">
+                            <span style="color:green" *ngIf="item.recibida">
                                 {{item.monto}}
                             </span>
-                            <span style="color:red" *ngIf="!item.isIngreso">
+                            <span style="color:red" *ngIf="!item.recibida">
                                 {{item.monto}}
                             </span>
                         </td>

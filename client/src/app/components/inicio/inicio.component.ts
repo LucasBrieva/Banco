@@ -31,6 +31,7 @@ export class InicioComponent implements OnInit {
     this._cuentaService.obtener_movimientos_cuenta_principal(this.id_cliente, this.token).subscribe(
       res => {
         this.movimientos = res.data;
+        debugger;
       },
       err => {
         console.log(err);

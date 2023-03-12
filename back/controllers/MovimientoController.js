@@ -69,6 +69,16 @@ const obtener_movimientos_cuenta_principal = async function (req, res) {
                 { cbuDestino: cuenta.cbu }
             ]
         }).limit(5);
+        if(movimientos.length > 0){
+            movimientos.forEach(e=>{
+                if(e.cbuDestino === cuenta.cbu){
+                    e.recibida = true;
+                }
+                else{
+                    e.recibida = false;
+                }
+            });
+        }
         res.status(200).send({ data: movimientos });
     } else {
         fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
@@ -79,8 +89,23 @@ const obtener_movimientos_cuenta_principal = async function (req, res) {
 const obtener_movimientos_cuenta_id = async function (req, res) {
     if (req.user) {
         let idCuenta = req.params["idCuenta"];
-        //TODO: Hacer prueba agregando array de movimiento a cuenta.
-        let movimientos = await Movimiento.find({ cuenta: idCuenta }).limit(50);
+        let cuenta = await Cuenta.findOne({ _id: idCuenta });
+        let movimientos = await Movimiento.find({
+            $or: [
+                { cuenta: cuenta._id },
+                { cbuDestino: cuenta.cbu }
+            ]
+        }).limit(50);
+        if(movimientos.length > 0){
+            movimientos.forEach(e=>{
+                if(e.cbuDestino === cuenta.cbu){
+                    e.recibida = true;
+                }
+                else{
+                    e.recibida = false;
+                }
+            });
+        }
         res.status(200).send({ data: movimientos });
     } else {
         fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
