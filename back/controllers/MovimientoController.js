@@ -37,6 +37,19 @@ const registro_movimiento = async function (req, res) {
     }
 }
 
+const obtener_movimientos_cuenta_principal = async function (req, res) {
+    if (req.user) {
+        let cliente_id = req.params["idCliente"];
+        //TODO: Hacer prueba agregando array de movimiento a cuenta.
+        let cuenta = await Cuenta.findOne({ cliente: cliente_id, principal: true });
+        let movimientos = await Movimiento.find({cuenta: cuenta._id}).limit(5);
+        res.status(200).send({ data: movimientos });
+    } else {
+        fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
+        res.status(500).send({ message: 'NoAccess' })
+    }
+}
+
 async function validateData(data, cuenta) {
     var msj = [];
     if (cuenta == undefined) {
@@ -101,9 +114,18 @@ async function validateData(data, cuenta) {
     else {
         msj.push("El monto es requerido.");
     }
+    if (data.isIngreso == undefined || data.isIngreso == null || data.isIngreso == "") {
+        msj.push("Es necesario determinar si es un ingreso o un egreso de dinero.")
+    }
+    else{
+        if(data.isIngreso.toString().toLowerCase() != "true" &&  data.isIngreso.toString().toLowerCase() != "false"){
+            msj.push("El campo isIngreso debe ser un booleano, favor de verificar.")
+        }
+    }
     return msj;
 }
 
 module.exports = {
-    registro_movimiento
+    registro_movimiento,
+    obtener_movimientos_cuenta_principal
 }

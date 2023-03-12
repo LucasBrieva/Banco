@@ -33,4 +33,44 @@
             </div>
         </div>
     </div>
+    <div class="col-md-6 ml-3">
+        <table class="table table-sm">
+            <thead class="thead-dark">
+                <tr>
+
+                    <th>Fecha</th>
+                    <th>Descripción</th>
+                    <th>Comentario</th>
+                    <th>Monto</th>
+
+                </tr>
+            </thead>
+            <ng-container *ngIf="movimientos.length == 0">
+                <tbody>
+                    <tr>
+                        <td class="text-center" colspan="5">
+                            <span class="text-muted">No hay movimientos disponibles</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </ng-container>
+            <ng-container *ngIf="movimientos.length > 0">
+                <tbody *ngFor="let item of movimientos; let indice = index">
+                    <tr>
+                        <td>{{item.createdAt | date:'dd/MM/yyyy'}}</td>
+                        <td>{{item.descripcion | slice:0:15}}</td>
+                        <td>{{item.comentario | slice:0:25}}</td>
+                        <td>
+                            <span style="color:green" *ngIf="item.isIngreso">
+                                {{item.monto}}
+                            </span>
+                            <span style="color:red" *ngIf="!item.isIngreso">
+                                {{item.monto}}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </ng-container>
+        </table>
+    </div>
 </div>

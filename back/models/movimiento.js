@@ -10,6 +10,7 @@ var MovimientoSchema = Schema({
     descripcion: {type: String, required: true},
     comentario: {type: String, required: false},
     cbuDestino: {type: String, required: false},
+    isIngreso: {type: Boolean, required: true},
     createdAt: {type:Date, default: Date.now, require: true},
 });
 
