@@ -9,6 +9,7 @@ var port = process.env.PORT || 4201;
 var cliente_route = require('./routes/cliente');
 var admin_route = require('./routes/admin');
 var cuenta_route = require('./routes/cuenta');
+var movimiento_route = require('./routes/movimiento');
 
 mongoose.set('strictQuery', false); // aquí se establece la opción strictQuery
 mongoose.connect('mongodb://127.0.0.1:27017/banco', (err, res)=>{
@@ -36,5 +37,6 @@ app.use((req,res,next)=>{
 app.use('/api', cliente_route);
 app.use('/api', admin_route);
 app.use('/api', cuenta_route);
+app.use('/api', movimiento_route);
 
 module.exports = app; 

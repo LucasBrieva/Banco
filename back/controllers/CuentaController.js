@@ -35,6 +35,7 @@ const registro_cuenta = async function (req, res) {
                     }
                     data.nroCuenta = data.nroCuenta.toUpperCase();
                     data.alias = data.alias.toUpperCase();
+                    data.tipo = data.tipo.toLowerCase();
                     var reg = await Cuenta.create(data);
                     res.status(200).send({ data: reg });
                 }
