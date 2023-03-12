@@ -9,9 +9,10 @@
 <div class="card">
     <div class="card-header">
         <div class="border-bottom  mb-3">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5 class=" mt-md-1 ">CLIENTE: {{cuenta.cliente.nombres | uppercase}} {{cuenta.cliente.apellidos | uppercase}}</h5>
+            <div class="row accordion-alt">
+                <div class="col-md-3">
+                    <h5 class=" mt-md-1 ">CLIENTE: {{cuenta.cliente.nombres | uppercase}} {{cuenta.cliente.apellidos |
+                        uppercase}}</h5>
                 </div>
                 <div class="col-md-4">
                     <h5 class=" mt-md-1 ">DNI: {{cuenta.cliente.dni}}</h5>
@@ -19,28 +20,35 @@
                 <div class="col-md-4">
                     <h5 class=" mt-md-1 ">TIPO CLIENTE: {{cuenta.cliente.tipo | uppercase }}</h5>
                 </div>
+                <div class="col-md-1 accordion-heading">
+                    <a href="#collapseInfo" role="button" data-toggle="collapse" aria-expanded="false" class="collapsed" aria-controls="collapseInfo">
+                        <span class="accordion-indicator" style="color:#2E3B4E"></span>
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-2">
-                <label>Saldo:&nbsp;&nbsp; </label>
-                <span *ngIf="cuenta.saldo != null"> <b>$ {{cuenta.saldo}} </b></span>
-                <span *ngIf="cuenta.saldo == null"> <b>$ 0 </b></span>
-            </div>
-            <div class="col-3">
-                <label>Tipo de cuenta:&nbsp;&nbsp; </label>
-                <span *ngIf="cuenta.tipo == 'ca'"> <b> Caja Ahorro Pesos </b></span>
-                <span *ngIf="cuenta.tipo == 'cc'"> <b> Cuenta Corriente </b></span>
-                <span *ngIf="cuenta.tipo == 'cch'"> <b> Cuenta Cheque </b></span>
-                <span *ngIf="cuenta.tipo == 'cau'"> <b> Caja Ahorro Dolares </b></span>
-            </div>
-            <div class="col-3">
-                <label>CBU:&nbsp;&nbsp; </label>
-                <span > <b> {{cuenta.cbu}} </b></span>
-            </div>
-            <div class="col-3">
-                <label>ALIAS:&nbsp;&nbsp; </label>
-                <span > <b> {{cuenta.alias | uppercase}} </b></span>
+        <div class="collapse" id="collapseInfo">
+            <div class="row">
+                <div class="col-2">
+                    <label>Saldo:&nbsp;&nbsp; </label>
+                    <span *ngIf="cuenta.saldo != null"> <b>$ {{cuenta.saldo}} </b></span>
+                    <span *ngIf="cuenta.saldo == null"> <b>$ 0 </b></span>
+                </div>
+                <div class="col-3">
+                    <label>Tipo de cuenta:&nbsp;&nbsp; </label>
+                    <span *ngIf="cuenta.tipo == 'ca'"> <b> Caja Ahorro Pesos </b></span>
+                    <span *ngIf="cuenta.tipo == 'cc'"> <b> Cuenta Corriente </b></span>
+                    <span *ngIf="cuenta.tipo == 'cch'"> <b> Cuenta Cheque </b></span>
+                    <span *ngIf="cuenta.tipo == 'cau'"> <b> Caja Ahorro Dolares </b></span>
+                </div>
+                <div class="col-3">
+                    <label>CBU:&nbsp;&nbsp; </label>
+                    <span> <b> {{cuenta.cbu}} </b></span>
+                </div>
+                <div class="col-3">
+                    <label>ALIAS:&nbsp;&nbsp; </label>
+                    <span> <b> {{cuenta.alias | uppercase}} </b></span>
+                </div>
             </div>
         </div>
     </div>
@@ -49,12 +57,12 @@
             <table class="table table-sm">
                 <thead class="thead-dark">
                     <tr>
-    
+
                         <th>Fecha</th>
                         <th>Descripción</th>
                         <th>Comentario</th>
                         <th>Monto</th>
-    
+
                     </tr>
                 </thead>
                 <ng-container *ngIf="movimientos.length == 0">
@@ -87,6 +95,6 @@
         </div>
     </div>
     <div class="card-footer">
-        <a [routerLink]="['/panel/cuentas']"  class="btn btn-secondary">Regresar</a>
+        <a [routerLink]="['/panel/cuentas']" class="btn btn-secondary" style="background-color: #49586f; color:white">Regresar</a>
     </div>
 </div>
