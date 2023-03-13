@@ -1,6 +1,8 @@
 'use strict'
 
 var Cliente = require('../models/cliente');
+var Cuenta = require('../models/cuenta');
+var Movimiento = require('../models/movimiento');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('../helpers/jwt');
 var fsHelper = require('../helpers/fsHelper');
@@ -82,18 +84,45 @@ const login_cliente = async function (req, res) {
     }
 }
 
-const obtener_cliente_id = async function (req, res){
+const obtener_cliente_id = async function (req, res) {
     if (req.user) {
         var id = req.params['id'];
-        var reg = await Cliente.findById({_id:id});
-        res.status(200).send({data: reg});
+        var reg = await Cliente.findById({ _id: id });
+        res.status(200).send({ data: reg });
     } else {
-        fsHelper.add_log("CuentaController.obtener_cuenta_principal_cliente", "Usuario no identificado");
+        fsHelper.add_log("ClienteController.obtener_cliente_id", "Usuario no identificado");
         res.status(500).send({ message: 'NoAccess: Usuario no identificado' })
+    }
+}
+const actualizar_cliente_vip = async function (req, res) {
+    if (req.user) {
+        var clienteId = req.params['clienteId'];
+        var cuentaId = req.params['cuentaId'];
+        var cuenta = await Cuenta.findOne({ _id: cuentaId });
+        if (Number(cuenta.saldo) > 150) {
+            await Cuenta.findByIdAndUpdate({ _id: cuentaId }, { saldo: Number(cuenta.saldo) - 150 });
+            await Movimiento.create({
+                cuenta: cuentaId,
+                tipo: "R",
+                monto: 150,
+                descripcion: "Ser VIP",
+                isIngreso: false
+            })
+            await Cliente.findByIdAndUpdate({ _id: clienteId }, { tipo: "vip" });
+            res.status(200).send({ message: "Bienvenido a los vips" });
+        }
+        else{
+            fsHelper.add_log("ClienteController.actualizar_cliente_vip", "Dinero insuficiente");
+            res.status(400).send({ message: 'Dinero insuficiente' });
+        }
+    } else {
+        fsHelper.add_log("ClienteController.actualizar_cliente_vip", "Usuario no identificado");
+        res.status(500).send({ message: 'NoAccess: Usuario no identificado' });
     }
 }
 module.exports = {
     registro_cliente,
     login_cliente,
-    obtener_cliente_id
+    obtener_cliente_id,
+    actualizar_cliente_vip
 }

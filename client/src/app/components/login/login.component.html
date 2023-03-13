@@ -11,10 +11,10 @@
                 <div class="form-group">
                     <label for="signin-password" class="form-label">Contraseña</label>
                     <div class="cs-password-toggle input-group-overlay">
-                        <input type="password" class="form-control appended-form-control" name="password" [(ngModel)]="user.password" placeholder="Contraseña" required="">
+                        <input type="password" class="form-control appended-form-control" id="password" name="password" [(ngModel)]="user.password" placeholder="Contraseña" required="">
                         <div class="input-group-append-overlay">
                         <label class="btn cs-password-toggle-btn input-group-text">
-                            <input type="checkbox" class="custom-control-input">
+                            <input type="checkbox" class="custom-control-input" (click)="togglePassword('password')">
                             <i class="cxi-eye cs-password-toggle-indicator"></i>
                             <span class="sr-only">Mostrar contraseña</span>
                         </label>
