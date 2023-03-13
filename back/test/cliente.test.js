@@ -159,4 +159,158 @@ describe('ClienteController', function() {
       await controller.registro_cliente(req, res);
     });
   });
+  describe('#login_cliente', function() {
+    it('Debe iniciar sesión correctamente si el correo electrónico y la contraseña son válidos', function(done) {
+      const req = {
+        body: {
+          email: 'test@test.com',
+          password: '1234'
+        }
+      };
+      const res = {
+        status: function(code) {
+          assert.equal(code, 200);
+          return this;
+        },
+        send: function(response) {
+          assert.ok(response.data);
+          assert.ok(response.token);
+          done();
+        }
+      };
+    
+      const user = {
+        email: 'test@test.com',
+        password: 'hash',
+        tipo: 'normal',
+        nombres: 'test',
+        apellidos: 'test',
+        pais: 'Argentina',
+        telefono: '11111111',
+        f_nacimiento: '01/01/2000',
+        dni: '12345678',
+        dadoBaja: 'false'
+      };
+      sinon.restore(); 
+      sinon.stub(Cliente, 'find').returns([user]);
+      sinon.stub(bcrypt, 'compare').yields(null, true);
+    
+      controller.login_cliente(req, res);
+    });
+
+    it('Debería devolver un error cuando no se proporcione el correo electrónico', async function() {
+      const req = {
+        body: {
+          password: '1234'
+        }
+      };
+      const res = {
+        status: function(code) {
+          assert.equal(code, 400);
+          return this;
+        },
+        send: function(response) {
+          assert.equal(response.message, 'No se proporcionó el correo electrónico');
+          assert.equal(response.data, undefined);
+          done();
+        }
+      };
+    
+      await controller.login_cliente(req, res);
+    });
+    it('Debería devolver un error cuando no se proporcione la contraseña', async function() {
+      const req = {
+        body: {
+          email: 'test@test.com'
+        }
+      };
+      const res = {
+        status: function(code) {
+          assert.equal(code, 400);
+          return this;
+        },
+        send: function(response) {
+          assert.equal(response.message, 'No se proporcionó la contraseña');
+          assert.equal(response.data, undefined);
+          done();
+        }
+      };
+    
+      await controller.login_cliente(req, res);
+    });
+    it('Debería devolver un error cuando el correo electrónico no existe', function(done) {
+      const req = {
+        body: {
+          email: 'nonexistent@test.com',
+          password: '1234'
+        }
+      };
+      const res = {
+        status: function(code) {
+          assert.equal(code, 400);
+          return this;
+        },
+        send: function(response) {
+          assert.equal(response.message, 'No se encontró el correo');
+          assert.equal(response.data, undefined);
+          done();
+        }
+      };
+      sinon.restore(); 
+      sinon.stub(Cliente, 'find').returns([]);
+    
+      controller.login_cliente(req, res);
+    });
+    it('Debería devolver un error cuando la contraseña no coincide', async function() {
+      const req = {
+        body: {
+          email: 'test@test.com',
+          password: 'wrongpassword'
+        }
+      };
+      const res = {
+        status: function(code) {
+          assert.equal(code, 400);
+          return this;
+        },
+        send: function(response) {
+          assert.equal(response.message, 'La contraseña no coincide');
+          assert.equal(response.data, undefined);
+          done();
+        }
+      };
+      sinon.restore(); 
+      sinon.stub(Cliente, 'find').returns([{
+        email: 'test@test.com',
+        password: 'hashedpassword',
+        dadoBaja: false
+      }]);
+      sinon.stub(bcrypt, 'compare').yields(null, false);
+    
+      await controller.login_cliente(req, res);
+    });
+    it('Debería devolver un error si el usuario está dado de baja', async function() {
+      const req = {
+        body: {
+          email: 'client1@test.com',
+          password: '1234'
+        }
+      };
+      const res = {
+        status: function(code) {
+          assert.equal(code, 400);
+          return this;
+        },
+        send: function(response) {
+          assert.equal(response.message, 'El usuario está dado de baja');
+          assert.equal(response.data, undefined);
+          done();
+        }
+      };
+      sinon.restore();
+      sinon.stub(Cliente, 'find').returns([{ email: req.body.email, password: 'hash', dadoBaja: true }]);
+
+      await controller.login_cliente(req, res);
+    });
+  });
 });
