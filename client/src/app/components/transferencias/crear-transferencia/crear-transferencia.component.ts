@@ -42,16 +42,13 @@ export class CrearTransferenciaComponent implements OnInit {
   ngOnInit(): void {
   }
   transferir(transferirForm: any) {
-    debugger;
     if (transferirForm.valid) {
       this._cuentaService.transferir(this.transferencia, this.token).subscribe(
         res => {
-          debugger;
           this._helperService.iziToast('SE REALIZO LA TRANSFERENCIA CORRECTAMENTE', 'TRANSFERIDO', true);
           this._router.navigate(['/panel/transferencias']);
         },
         err => {
-          debugger;
           if (err.error.message.cbuDestino) {
             var msjCbu = document.getElementById('msjCbu') as HTMLSpanElement;
             msjCbu.hidden = false;
@@ -76,7 +73,6 @@ export class CrearTransferenciaComponent implements OnInit {
       )
     }
     else {
-      debugger;
     }
   }
 
