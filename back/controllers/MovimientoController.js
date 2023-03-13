@@ -61,7 +61,6 @@ const registro_movimiento = async function (req, res) {
 const obtener_movimientos_cuenta_principal = async function (req, res) {
     if (req.user) {
         let cliente_id = req.params["idCliente"];
-        //TODO: Hacer prueba agregando array de movimiento a cuenta.
         let cuenta = await Cuenta.findOne({ cliente: cliente_id, principal: true });
         let movimientos = await Movimiento.find({
             $or: [
