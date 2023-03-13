@@ -1,28 +1,85 @@
 <div class="row" style="width: 100%;height: 100%; margin-top: 140px;">
     <div class=" col-lg-7 mx-auto" style="display: flex;align-items: center;">
         <div class="px-md-4 px-4">
-            <h3 class="modal-title mt-4 mb-0 text-center mb-5">Iniciar sesión</h3>
-            <p class="font-size-sm text-muted text-center">Inicie sesión en su cuenta utilizando el correo electronico y la contraseña proporcionados durante el registro.</p>
-            <form #loginForm="ngForm" (ngSubmit) = "login(loginForm)">
-                <div class="form-group">
-                <label for="signin-email">Correo electronico</label>
-                <input type="email" class="form-control" name="email" [(ngModel)]="user.email" placeholder="Correo electronico" required="">
-                </div>
-                <div class="form-group">
-                    <label for="signin-password" class="form-label">Contraseña</label>
-                    <div class="cs-password-toggle input-group-overlay">
-                        <input type="password" class="form-control appended-form-control" id="password" name="password" [(ngModel)]="user.password" placeholder="Contraseña" required="">
-                        <div class="input-group-append-overlay">
-                        <label class="btn cs-password-toggle-btn input-group-text">
-                            <input type="checkbox" class="custom-control-input" (click)="togglePassword('password')">
-                            <i class="cxi-eye cs-password-toggle-indicator"></i>
-                            <span class="sr-only">Mostrar contraseña</span>
-                        </label>
+            <ng-container *ngIf="!crearCuenta">
+                <h3 class="modal-title mt-4 mb-0 text-center mb-5">Iniciar sesión</h3>
+                <p class="font-size-sm text-muted text-center">Inicie sesión en su cuenta utilizando el correo
+                    electronico y la contraseña proporcionados durante el registro.</p>
+                <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+                    <div class="form-group">
+                        <label for="signin-email">Correo electronico</label>
+                        <input type="email" class="form-control" name="email" [(ngModel)]="user.email"
+                            placeholder="Correo electronico" required="">
+                    </div>
+                    <div class="form-group">
+                        <label for="signin-password" class="form-label">Contraseña</label>
+                        <div class="cs-password-toggle input-group-overlay">
+                            <input type="password" class="form-control appended-form-control" id="password"
+                                name="password" [(ngModel)]="user.password" placeholder="Contraseña" required="">
+                            <div class="input-group-append-overlay">
+                                <label class="btn cs-password-toggle-btn input-group-text">
+                                    <input type="checkbox" class="custom-control-input"
+                                        (click)="togglePassword('password')">
+                                    <i class="cxi-eye cs-password-toggle-indicator"></i>
+                                    <span class="sr-only">Mostrar contraseña</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
-            </form>
-            </div>
+                    <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+                    <button class="btn btn-secondary btn-block" (click)="cambiarCrearCuenta()">Crear cuenta</button>
+                </form>
+            </ng-container>
+            <ng-container *ngIf="crearCuenta">
+                <h3 class="modal-title mt-4 mb-0 text-center mb-5">Iniciar sesión</h3>
+                <p class="font-size-sm text-muted text-center">Inicie sesión en su cuenta utilizando el correo
+                    electronico y la contraseña proporcionados durante el registro.</p>
+                <form #registrarForm="ngForm" (ngSubmit)="registrar(registrarForm)">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="">Nombres</label>
+                            <input type="text" class="form-control" name="nombres" [(ngModel)]="user.nombres"
+                                placeholder="Nombres" required="">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="">Apellidos</label>
+                            <input type="text" class="form-control" name="apellidos" [(ngModel)]="user.apellidos"
+                                placeholder="Apellidos" required="">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="">Email</label>
+                            <input type="text" class="form-control" name="email" [(ngModel)]="user.email"
+                                placeholder="Email" required="">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="signin-password" class="form-label">Contraseña</label>
+                            <div class="cs-password-toggle input-group-overlay">
+                                <input type="password" class="form-control appended-form-control" id="password"
+                                    name="password" [(ngModel)]="user.password" placeholder="Contraseña" required>
+                                <div class="input-group-append-overlay">
+                                    <label class="btn cs-password-toggle-btn input-group-text">
+                                        <input type="checkbox" class="custom-control-input"
+                                            (click)="togglePassword('password')">
+                                        <i class="cxi-eye cs-password-toggle-indicator"></i>
+                                        <span class="sr-only">Mostrar contraseña</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="">Telefono</label>
+                            <input type="text" class="form-control" name="telefono" [(ngModel)]="user.telefono"
+                                placeholder="Telefono" required="">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="">DNI</label>
+                            <input type="text" class="form-control" name="dni" [(ngModel)]="user.dni" placeholder="DNI"
+                                required="">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Registrarme</button>
+                </form>
+            </ng-container>
+        </div>
     </div>
 </div>

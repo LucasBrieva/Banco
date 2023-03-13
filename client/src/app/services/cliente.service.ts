@@ -36,9 +36,9 @@ export class ClienteService {
     return this._http.post(this.url+'listar_clientes_filtro_admin/', filtro, {headers:headers});
   }
 
-  registro_cliente_admin(data:any, token:any):Observable<any>{
-    let headers = new HttpHeaders({'Content-Type':'application/json','Authorization': token});
-    return this._http.post(this.url+'registro_cliente_admin/', data, {headers:headers});
+  registro_cliente(data:any):Observable<any>{
+    let headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this._http.post(this.url+'registro_cliente/', data, {headers:headers});
   }
 
   login_cliente(data:any): Observable<any> {
