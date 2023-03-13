@@ -42,7 +42,6 @@ export class CrearCuentasComponent implements OnInit {
   }
   registro(registroForm: any) {
     if (registroForm.valid) {
-      debugger;
       this.cuenta.cliente = this.id_cliente;
       this.cuenta.cbu = this.cbuRandom();
       this.cuenta.alias = this.aliasRandom();

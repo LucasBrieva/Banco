@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminService } from 'src/app/services/admin.service';
 import { ClienteService } from 'src/app/services/cliente.service';
+import { HelperService } from 'src/app/services/helper.service';
 
 declare var jquery:any;
 declare var $:any;
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private _adminService:AdminService,
     private _clienteService:ClienteService,
-    private _router: Router
+    private _router: Router,
+    private _helperService:HelperService
   ) {
     this.token= this._adminService.getToken();
    }
@@ -44,25 +46,9 @@ export class LoginComponent implements OnInit {
       this._clienteService.login_cliente(data).subscribe(
         response => {
           if(response.data == undefined){
-            iziToast.show({
-              title: 'ERROR',
-              titleColor:'#F4EDED',
-              backgroundColor:'#F54646',
-              class:'text-danger',
-              position: 'topRight',
-              message: response.message,
-              messageColor:'#F4EDED'
-            })
+            this._helperService.iziToast(response.message, "ERROR", false);
           }else{
-            iziToast.show({
-              title: 'BIENVENIDO',
-              titleColor:'#FFF',
-              backgroundColor:'#83DF4E',
-              class:'text-danger',
-              position: 'topRight',
-              message: 'Hola ' + response.data.nombres.toUpperCase() + ', bienvenido/a',
-              messageColor:'#FFF'
-            })
+            this._helperService.iziToast('Hola ' + response.data.nombres.toUpperCase() + ', bienvenido/a', "BIENVENIDO", true);
             this.usuario= response.data;
             localStorage.setItem('token', response.token);
             localStorage.setItem('_id',response.data._id)
@@ -77,16 +63,11 @@ export class LoginComponent implements OnInit {
         }
       )
     }else{
-      iziToast.show({
-        title: 'ERROR',
-        titleColor:'#F4EDED',
-        backgroundColor:'#F54646',
-        class:'text-danger',
-        position: 'topRight',
-        message: 'Los datos del formulario no son válidos',
-        messageColor:'#F4EDED'
-      })
+      this._helperService.iziToast('Los datos del formulario no son válidos', "ERROR", false);
+      
     }
   }
-
+  togglePassword(id:string){
+    this._helperService.togglePassword(id);
+  }
 }

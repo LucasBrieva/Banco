@@ -1,12 +1,12 @@
 <header class="navbar navbar-expand navbar-light fixed-top navbar-box-shadow bg-light px-3 px-lg-4" data-scroll-header
-  data-fixed-element >
+  data-fixed-element>
   <button class="navbar-toggler d-block d-lg-none mr-3 ml-auto" type="button" data-toggle="offcanvas"
     data-target="componentsNav">
     <span class="navbar-toggler-icon"></span>
   </button>
   <ul class="navbar-nav ml-auto d-none d-lg-flex align-items-center">
     <li class="nav-item" *ngIf="cliente.tipo == 'normal'">
-      <a class="nav-link py-0">
+      <a class="nav-link py-0" (click)="hazteVip()" data-toggle="modal" type="button">
         <i class="cxi-star align-middle mt-n1 mr-2" style="color: yellow;"></i>
         Hazte VIP
       </a>
@@ -31,12 +31,46 @@
   <div class="d-flex d-lg-none align-items-center py-4 px-3 border-bottom border-light">
     <a class="btn btn-primary btn-block mr-3 px-4" href="index.html"><i class="cxi-eye mt-n1 mr-2"></i>Preview</a>
   </div>
-  <div class="cs-offcanvas-body px-0 pt-4 pb-grid-gutter" style="background-color: #128748 !important;" data-simplebar data-simplebar-inverse>
+  <div class="cs-offcanvas-body px-0 pt-4 pb-grid-gutter" style="background-color: #128748 !important;" data-simplebar
+    data-simplebar-inverse>
     <nav class="nav nav-light" style="background-color: #149953 !important;">
       <a class="nav-link px-4" [routerLink]="['/inicio']" routerLinkActive="active">Inicio</a>
       <a class="nav-link px-4" [routerLink]="['/panel/cuentas']" routerLinkActive="active">Cuentas</a>
       <a class="nav-link px-4" [routerLink]="['/panel/transferencias']" routerLinkActive="active">Transferencias</a>
-      <a class="nav-link px-4" [routerLink]="['/panel/depositosretiros']" routerLinkActive="active">Depositos/Retiros</a>
+      <a class="nav-link px-4" [routerLink]="['/panel/depositosretiros']"
+        routerLinkActive="active">Depositos/Retiros</a>
     </nav>
   </div>
 </aside>
+
+<div class="modal fade" id="modalVip" tabindex="-1" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">x</button>
+      </div>
+      <div class="modal-body">
+        <div class="imgFondo">
+          <img src="assets/img/components/vip/NBVIP.png" alt="Imagen de fondo">
+        </div>
+        <div class="modal-footer">
+          <select class="form-control custom-select col-6" style="font-size: 16px;" name="cuentaId"
+            [(ngModel)]="cuentaId" required>
+            <option value="" disabled selected>-- SELECCIONAR --</option>
+            <option value="{{item._id}}" *ngFor="let item of cuentas">
+              <span *ngIf="item.tipo == 'cc'">CUENTA CORRIENTE - </span>
+              <span *ngIf="item.tipo == 'ca'">CAJA AHORRO PESOS - </span>
+              <span *ngIf="item.tipo == 'cch'">CUENTA CHEQUE - </span>
+              <span *ngIf="item.tipo == 'cau'">CAJA AHORRO DOLARES - </span>
+              {{item.nroCuenta}} -
+              <span *ngIf="item.saldo != null">$ {{item.saldo}}</span>
+              <span *ngIf="item.saldo == null">$ 0</span>
+            </option>
+          </select>
+          <button class="btn btn-primary mr-3" type="button" (click)="actualizar_tipo_cliente()">HACEME VIP</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

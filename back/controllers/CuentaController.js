@@ -102,6 +102,9 @@ const crear_cuenta = async function (req, res) {
                 if (e.tipo == data.tipo) {
                     fsHelper.add_log("CuentaController.crear_cuenta", "Ya tenes una cuenta de este tipo");
                     res.status(400).send({ message: 'Ya tenes una cuenta de este tipo' })
+                }else{
+                    let reg = await Cuenta.create(data);
+                    res.status(200).send({ data: reg });
                 }
                 if (data.principal) {
                     if (e.principal) {
@@ -110,8 +113,7 @@ const crear_cuenta = async function (req, res) {
                 }
             });
         }
-        let reg = await Cuenta.create(data);
-        res.status(200).send({ data: reg });
+        
     } else {
         fsHelper.add_log("CuentaController.obtener_cuenta_principal_cliente", "Usuario no identificado");
         res.status(500).send({ message: 'NoAccess: Usuario no identificado' })
