@@ -17,7 +17,6 @@ export class AdminGuard implements CanActivate {
   }
 
   canActivate():any{
-    debugger;
     if(!this._adminService.isAuthenticated(['vip', 'normal'])){
       this._router.navigate(["/login"]);
       return false;

@@ -31,7 +31,6 @@ export class AdminService {
     }
 
     try {
-      debugger;
       const helper = new JwtHelperService();
       var decodedToken = helper.decodeToken(token);
       if(helper.isTokenExpired(token)){
