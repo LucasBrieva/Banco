@@ -75,5 +75,7 @@ export class CrearTransferenciaComponent implements OnInit {
     else {
     }
   }
-
+  limpiarCuenta(){
+    this.transferencia.cbuDestino = '';
+  }
 }

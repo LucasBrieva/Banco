@@ -5,72 +5,89 @@
 </div>
 
 <div class="row">
-    <div class="main-box col-5 ml-5" *ngFor="let item of cuentas" [routerLink]="['/panel/cuentas/', item._id]" >
-        <div class="card-body">
-            <div class="row">
-                <div class="col-6">
-                    <h2 class="mb-2 white-letters" *ngIf="item.saldo != null">$ {{item.saldo}}</h2>
-                    <h2 class="mb-2 white-letters" *ngIf="item.saldo == null">$ 0</h2>
+    <ng-container *ngIf="this.cuentas.length > 0">
+        <div class="main-box col-5 ml-5" *ngFor="let item of cuentas" [routerLink]="['/panel/cuentas/', item._id]">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="mb-2 white-letters" *ngIf="item.saldo != null">$ {{item.saldo}}</h2>
+                        <h2 class="mb-2 white-letters" *ngIf="item.saldo == null">$ 0</h2>
+                    </div>
+                    <div class="col-5">
+                        <h4 class="white-letters"> {{item.nroCuenta}}</h4>
+                    </div>
                 </div>
-                <div class="col-5">
-                    <h4 class="white-letters"> {{item.nroCuenta}}</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-5">
-                    <span class="white-letters">Tipo de cuenta: </span>
-                    <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'ca'">Caja Ahorros Pesos</span>
-                    <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'cc'">Cuenta Corriente</span>
-                    <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'cch'">Cuenta Cheques</span>
-                    <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'cau'">Caja Ahorros Dolares</span>
-                </div>
-                <div class="col-2">
-                    <span class="white-letters">CBU:
-                    </span>
-                    <span class="white-letters">{{item.cbu}}
-                    </span>
+                <div class="row">
+                    <div class="col-5">
+                        <span class="white-letters">Tipo de cuenta: </span>
+                        <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'ca'">Caja Ahorros
+                            Pesos</span>
+                        <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'cc'">Cuenta
+                            Corriente</span>
+                        <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'cch'">Cuenta
+                            Cheques</span>
+                        <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'cau'">Caja Ahorros
+                            Dolares</span>
+                    </div>
+                    <div class="col-2">
+                        <span class="white-letters">CBU:
+                        </span>
+                        <span class="white-letters">{{item.cbu}}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-6 ml-3">
-        <table class="table table-sm">
-            <thead class="" style="background-color: #1b844c; color:white">
-                <tr>
-
-                    <th>Fecha</th>
-                    <th>Descripción</th>
-                    <th>Comentario</th>
-                    <th>Monto</th>
-
-                </tr>
-            </thead>
-            <ng-container *ngIf="movimientos.length == 0">
-                <tbody>
+        <div class="col-md-6 ml-3">
+            <table class="table table-sm">
+                <thead class="" style="background-color: #1b844c; color:white">
                     <tr>
-                        <td class="text-center" colspan="5">
-                            <span class="text-muted">No hay movimientos disponibles</span>
-                        </td>
+
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Comentario</th>
+                        <th>Monto</th>
+
                     </tr>
-                </tbody>
-            </ng-container>
-            <ng-container *ngIf="movimientos.length > 0">
-                <tbody *ngFor="let item of movimientos; let indice = index">
-                    <tr>
-                        <td>{{item.createdAt | date:'dd/MM/yyyy'}}</td>
-                        <td>{{item.descripcion | slice:0:15}}</td>
-                        <td>{{item.comentario | slice:0:25}}</td>
-                        <td>
-                            <span style="color:green" *ngIf="item.recibida">
-                                {{item.monto}}
-                            </span>
-                            <span style="color:red" *ngIf="!item.recibida">
-                                {{item.monto}}
-                            </span>
-                        </td>
-                    </tr>
-                </tbody>
-            </ng-container>
-        </table>
-    </div>
+                </thead>
+                <ng-container *ngIf="movimientos.length == 0">
+                    <tbody>
+                        <tr>
+                            <td class="text-center" colspan="5">
+                                <span class="text-muted">No hay movimientos disponibles</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </ng-container>
+                <ng-container *ngIf="movimientos.length > 0">
+                    <tbody *ngFor="let item of movimientos; let indice = index">
+                        <tr>
+                            <td>{{item.createdAt | date:'dd/MM/yyyy'}}</td>
+                            <td>{{item.descripcion | slice:0:15}}</td>
+                            <td>{{item.comentario | slice:0:25}}</td>
+                            <td>
+                                <span style="color:green" *ngIf="item.recibida">
+                                    {{item.monto}}
+                                </span>
+                                <span style="color:red" *ngIf="!item.recibida">
+                                    {{item.monto}}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </ng-container>
+            </table>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="this.cuentas.length == 0">
+        <div class="card">
+            <div class="main-box-2 col-12 ml-5" [routerLink]="['/panel/cuentas/crear']">
+                <div class="card-body">
+                    <div class="row">
+                        <h3 class="ml-5 white-letters">BIENVENIDO, CREA TU PRIMER CUENTA Y VIAJEMOS JUNTOS.</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
 </div>

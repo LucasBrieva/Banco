@@ -61,26 +61,33 @@ const registro_movimiento = async function (req, res) {
 const obtener_movimientos_cuenta_principal = async function (req, res) {
     if (req.user) {
         let cliente_id = req.params["idCliente"];
-        let cuenta = await Cuenta.findOne({ cliente: cliente_id, principal: true });
-        let movimientos = await Movimiento.find({
-            $or: [
-                { cuenta: cuenta._id },
-                { cbuDestino: cuenta.cbu }
-            ]
-        }).limit(5);
-        if(movimientos.length > 0){
-            movimientos.forEach(e=>{
-                if(e.cbuDestino === cuenta.cbu){
-                    e.recibida = true;
+        try{
+            let cuenta = await Cuenta.findOne({ cliente: cliente_id, principal: true });
+            if(cuenta){
+                let movimientos = await Movimiento.find({
+                    $or: [
+                        { cuenta: cuenta._id },
+                        { cbuDestino: cuenta.cbu }
+                    ]
+                }).limit(5);
+                if(movimientos.length > 0){
+                    movimientos.forEach(e=>{
+                        if(e.cbuDestino === cuenta.cbu || e.tipo === "D"){
+                            e.recibida = true;
+                        }
+                        else{
+                            e.recibida = false;
+                        }
+                    });
                 }
-                else{
-                    e.recibida = false;
-                }
-            });
+                res.status(200).send({ data: movimientos });
+            }
+        }catch(error){
+            fsHelper.add_log("MovimientoController.obtener_movimientos_cuenta_principal", "Error: " + error);
+            res.status(500).send({ message: "Error: " + error })
         }
-        res.status(200).send({ data: movimientos });
     } else {
-        fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
+        fsHelper.add_log("MovimientoController.obtener_movimientos_cuenta_principal", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
         res.status(500).send({ message: 'NoAccess' })
     }
 }
@@ -97,7 +104,7 @@ const obtener_movimientos_cuenta_id = async function (req, res) {
         }).limit(50);
         if(movimientos.length > 0){
             movimientos.forEach(e=>{
-                if(e.cbuDestino === cuenta.cbu){
+                if(e.cbuDestino === cuenta.cbu || e.tipo === "D"){
                     e.recibida = true;
                 }
                 else{
@@ -128,6 +135,22 @@ const obtener_movimientos_transferencias = async function (req, res) {
     }
 }
 
+const obtener_movimientos_dep_ret = async function (req, res) {
+    if (req.user) {
+        //TODO: Hacer prueba agregando array de movimiento a cuenta.
+        let movimientos = await Movimiento.find({
+            $or: [
+                { tipo: new RegExp(tipoMovimiento.tipoMovimiento.DEPOSITO, 'i') },
+                { tipo: new RegExp(tipoMovimiento.tipoMovimiento.RETIRO, 'i') }
+            ]
+        }).limit(10);
+        res.status(200).send({ data: movimientos });
+    } else {
+        fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
+        res.status(500).send({ message: 'NoAccess' })
+    }
+}
+
 const transferir = async function (req, res) {
     if (req.user) {
         var data = req.body;
@@ -148,6 +171,42 @@ const transferir = async function (req, res) {
                 await Cuenta.findByIdAndUpdate({ _id: cuentaOrigen._id }, {
                     saldo: Number(cuentaOrigen.saldo) - Number(data.monto),
                 });
+                var reg = await Movimiento.create(data);
+                res.status(200).send({ data: reg });
+            }
+            else {
+                fsHelper.add_log("CuentaController.transferir", msjValidacion);
+                res.status(400).send({ message: msjValidacion, data: undefined });
+            }
+        } catch (error) {
+            fsHelper.add_log("CuentaController.transferir", msjValidacion);
+            res.status(500).send({ message: msjValidacion, data: undefined });
+        }
+    }
+    else {
+        fsHelper.add_log("CuentaController.transferir", "Usuario no identificado");
+        res.status(500).send({ message: 'NoAccess: Usuario no identificado', data: undefined });
+    }
+}
+
+const crear_deposito_retiro = async function(req,res){
+    if (req.user) {
+        var data = req.body;
+        try {
+            //Voy a buscar la información de la cuenta origen
+            var cuentaOrigen = await Cuenta.findById({ _id: data.cuenta });
+            var msjValidacion = await validateData(data, cuentaOrigen);
+            if (Object.keys(msjValidacion).length === 0) {
+                if(data.tipo == tipoMovimiento.tipoMovimiento.RETIRO){
+                    await Cuenta.findByIdAndUpdate({ _id: cuentaOrigen._id }, {
+                        saldo: Number(cuentaOrigen.saldo) - Number(data.monto),
+                    });
+                }
+                else{
+                    await Cuenta.findByIdAndUpdate({ _id: cuentaOrigen._id }, {
+                        saldo: Number(cuentaOrigen.saldo) + Number(data.monto),
+                    });
+                }
                 var reg = await Movimiento.create(data);
                 res.status(200).send({ data: reg });
             }
@@ -259,5 +318,7 @@ module.exports = {
     obtener_movimientos_cuenta_principal,
     obtener_movimientos_cuenta_id,
     obtener_movimientos_transferencias,
-    transferir
+    transferir,
+    crear_deposito_retiro,
+    obtener_movimientos_dep_ret
 }
