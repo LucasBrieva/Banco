@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   public user : any = {};
   public usuario:any = {};
   public token:any = '';
-
+  public crearCuenta = false;
   constructor(
     private _adminService:AdminService,
     private _clienteService:ClienteService,
@@ -69,5 +69,33 @@ export class LoginComponent implements OnInit {
   }
   togglePassword(id:string){
     this._helperService.togglePassword(id);
+  }
+  cambiarCrearCuenta(){
+    debugger;
+    this.crearCuenta = true;
+  }
+  registrar(registrarForm:any){
+    if(registrarForm.valid){
+      this.user.pais = "Argentina";
+      this.user.f_nacimiento = "11/11/1999";
+      this.user.tipo = "normal";
+      this._clienteService.registro_cliente(this.user).subscribe(
+        res=>{
+          this._helperService.iziToast('Hola ' + res.data.nombres.toUpperCase() + ', bienvenido/a', "BIENVENIDO", true);
+            this.usuario= res.data;
+            localStorage.setItem('token', res.token);
+            localStorage.setItem('_id',res.data._id)
+            setTimeout(() => {
+              this._router.navigate(['/']);
+            }, 2000);
+        },
+        err=>{
+          this._helperService.iziToast('Hubo un error al crear la cuenta', "ERROR", false);
+        }
+      )
+    }else{
+      this._helperService.iziToast('Ingreso algún dato mal', "ERROR", false);
+    }
+    
   }
 }
