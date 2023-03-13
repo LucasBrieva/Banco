@@ -1,0 +1,29 @@
+.main-box {
+    border: 2px solid;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    width: 100%;
+    padding: 8px 12px 8px 8px;
+    border-radius: 6px;
+    background-color: #149953;
+    margin-bottom: 15px;
+    -webkit-transition: all 1s;
+    transition: all 1s;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+
+  }
+  .card-body {
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+  }
+  .main-box:hover {
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+    background-color: #2d8054;
+  }
+
+  
+.white-letters{
+    color: white !important;
+}

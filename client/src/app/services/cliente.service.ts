@@ -18,9 +18,9 @@ export class ClienteService {
 
   //#region GET
 
-  obtener_cliente_admin(id:any, token:any):Observable<any>{
+  obtener_cliente_id(id:any, token:any):Observable<any>{
     let headers = new HttpHeaders({'Content-Type':'application/json','Authorization': token});
-    return this._http.get(this.url+'obtener_cliente_admin/' + id, {headers:headers});
+    return this._http.get(this.url+'obtener_cliente_id/' + id, {headers:headers});
   }
   
   //#endregion

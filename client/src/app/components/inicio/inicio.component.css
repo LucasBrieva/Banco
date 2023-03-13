@@ -4,11 +4,24 @@
     border-radius: 6px;
     background-color: #149953;
     margin-bottom: 15px;
-    border: 1px solid rgba(23,26,31,.04);
+    border: 1px solid rgba(23, 26, 31, .04);
     cursor: pointer;
     -webkit-transition: all 1s;
     transition: all 1s;
 }
-.white-letters{
+
+.main-box-2 {
+    width: 100%;
+    padding: 8px 12px 8px 8px;
+    border-radius: 6px;
+    background-color: #149953;
+    border: 1px solid rgba(23, 26, 31, .04);
+    cursor: pointer;
+    -webkit-transition: all 1s;
+    transition: all 1s;
+    margin: 0 auto;
+}
+
+.white-letters {
     color: white !important;
 }

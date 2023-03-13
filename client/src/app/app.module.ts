@@ -15,6 +15,9 @@ import { IndexCuentasComponent } from './components/cuentas/index-cuentas/index-
 import { DetalleCuentasComponent } from './components/cuentas/detalle-cuentas/detalle-cuentas.component';
 import { IndexTransferenciasComponent } from './components/transferencias/index-transferencias/index-transferencias.component';
 import { CrearTransferenciaComponent } from './components/transferencias/crear-transferencia/crear-transferencia.component';
+import { DepositoRetiroIndexComponent } from './components/deposito-retiro/deposito-retiro-index/deposito-retiro-index.component';
+import { CrearCuentasComponent } from './components/cuentas/crear-cuentas/crear-cuentas.component';
+import { CrearDepositoRetiroComponent } from './components/deposito-retiro/crear-deposito-retiro/crear-deposito-retiro.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { CrearTransferenciaComponent } from './components/transferencias/crear-t
     IndexCuentasComponent,
     DetalleCuentasComponent,
     IndexTransferenciasComponent,
-    CrearTransferenciaComponent
+    CrearTransferenciaComponent,
+    DepositoRetiroIndexComponent,
+    CrearCuentasComponent,
+    CrearDepositoRetiroComponent,
   ],
   imports: [
     BrowserModule,

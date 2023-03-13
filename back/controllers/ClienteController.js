@@ -1,7 +1,6 @@
 'use strict'
 
 var Cliente = require('../models/cliente');
-var Direccion = require('../models/direccion');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('../helpers/jwt');
 var fsHelper = require('../helpers/fsHelper');
@@ -83,7 +82,18 @@ const login_cliente = async function (req, res) {
     }
 }
 
+const obtener_cliente_id = async function (req, res){
+    if (req.user) {
+        var id = req.params['id'];
+        var reg = await Cliente.findById({_id:id});
+        res.status(200).send({data: reg});
+    } else {
+        fsHelper.add_log("CuentaController.obtener_cuenta_principal_cliente", "Usuario no identificado");
+        res.status(500).send({ message: 'NoAccess: Usuario no identificado' })
+    }
+}
 module.exports = {
     registro_cliente,
-    login_cliente
+    login_cliente,
+    obtener_cliente_id
 }

@@ -93,6 +93,30 @@ const obtener_detalle_cuenta = async function (req, res) {
     }
 }
 
+const crear_cuenta = async function (req, res) {
+    if (req.user) {
+        let data = req.body;
+        let cuentas = await Cuenta.find({ cliente: data.cliente });
+        if (cuentas.length > 0) {
+            cuentas.forEach(async e => {
+                if (e.tipo == data.tipo) {
+                    fsHelper.add_log("CuentaController.crear_cuenta", "Ya tenes una cuenta de este tipo");
+                    res.status(400).send({ message: 'Ya tenes una cuenta de este tipo' })
+                }
+                if (data.principal) {
+                    if (e.principal) {
+                        await Cuenta.findByIdAndUpdate({ _id: e._id }, { principal: false });
+                    }
+                }
+            });
+        }
+        let reg = await Cuenta.create(data);
+        res.status(200).send({ data: reg });
+    } else {
+        fsHelper.add_log("CuentaController.obtener_cuenta_principal_cliente", "Usuario no identificado");
+        res.status(500).send({ message: 'NoAccess: Usuario no identificado' })
+    }
+}
 //#endregion
 
 //#region Functions
@@ -141,5 +165,6 @@ module.exports = {
     registro_cuenta,
     obtener_cuenta_principal_cliente,
     obtener_cuentas_cliente,
-    obtener_detalle_cuenta
+    obtener_detalle_cuenta,
+    crear_cuenta
 }

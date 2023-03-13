@@ -3,33 +3,24 @@ import { CuentaService } from 'src/app/services/cuenta.service';
 import { GLOBAL } from 'src/app/services/GLOBAL';
 
 @Component({
-  selector: 'app-inicio',
-  templateUrl: './inicio.component.html',
-  styleUrls: ['./inicio.component.css']
+  selector: 'app-deposito-retiro-index',
+  templateUrl: './deposito-retiro-index.component.html',
+  styleUrls: ['./deposito-retiro-index.component.css']
 })
-export class InicioComponent implements OnInit {
+export class DepositoRetiroIndexComponent implements OnInit {
 
   public url;
   public token;
   public id_cliente;
-  public cuentas: Array<any> = [];
   public movimientos: Array<any> = [];
+
   constructor(
     private _cuentaService: CuentaService
   ) {
     this.url = GLOBAL.url;
     this.token = localStorage.getItem('token');
     this.id_cliente = localStorage.getItem('_id');
-    this._cuentaService.obtener_cuenta_principal_cliente(this.id_cliente, this.token).subscribe(
-      res => {
-        this.cuentas = res.data;
-      },
-      err => {
-        console.log(err);
-        this.cuentas = [];
-      }
-    );
-    this._cuentaService.obtener_movimientos_cuenta_principal(this.id_cliente, this.token).subscribe(
+    this._cuentaService.obtener_movimientos_dep_ret(this.token).subscribe(
       res => {
         this.movimientos = res.data;
       },
@@ -40,7 +31,5 @@ export class InicioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  }
-  test() {
   }
 }
