@@ -17,10 +17,11 @@ export class AdminGuard implements CanActivate {
   }
 
   canActivate():any{
-    // if(!this._adminService.isAuthenticated(['Gerente general'])){
-    //   this._router.navigate(["/login"]);
-    //   return false;
-    // }
+    debugger;
+    if(!this._adminService.isAuthenticated(['vip', 'normal'])){
+      this._router.navigate(["/login"]);
+      return false;
+    }
     return true;
   }
   
