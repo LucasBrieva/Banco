@@ -1,0 +1,32 @@
+.imgFondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.imgFondo img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.modal-container {
+    border-radius: 10px;
+}
+
+.card{
+    background-color: rgb(221, 221, 221) !important;
+    border: 0px !important;
+}
+.card-body{
+    border: 0px !important;
+}
+.card-footer{
+    border: 0px !important;
+}
+
+  
