@@ -24,6 +24,7 @@
     "socket.io": "^4.6.1"
   },
   "devDependencies": {
+    "chai": "^4.3.7",
     "nodemon": "^2.0.15",
     "sinon": "^15.0.2"
   },

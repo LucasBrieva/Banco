@@ -9,7 +9,6 @@ const add_log = async function (from, message) {
     var msj = moment().hour() + ":" + moment().minutes() + " - Mensaje proveniente de " + from + ": " + message;
     if (fs.fs.existsSync(path)) {
         fs.fs.appendFile(path, msj + "\n", (error) => {
-            console.log("ERROR:" + error);
         });
     } else {
         fs.writeFile(path, msj + "\n");
@@ -20,7 +19,6 @@ const add_log_array = async function (from, message) {
         var msj = moment().hour() + ":" + moment().minutes() + " - Mensaje proveniente de " + from + ": " + element;
         if (fs.fs.existsSync(path)) {
             fs.fs.appendFile(path, msj + "\n", (error) => {
-                console.log("ERROR:" + error);
             });
         } else {
             fs.writeFile(path, msj + "\n");
