@@ -1,38 +1,62 @@
 <app-sidebar></app-sidebar>
 
 <div class="border-bottom pt-5 pb-2 mt-lg-2 mb-5">
-    <h1 class="mt-3 ml-4  mt-md-4 pt-5" style="color: #128748;">CUENTAS</h1>
-    <button class="btn mb-2 me-1" style="background-color: #128748; color:white;"
-        [routerLink]="['/panel/cuentas/crear']" type="button">Nueva cuenta</button>
+    <div class="row">
+        <h1 class="mt-3 ml-4 mt-md-4 pt-5 col-9">CUENTAS</h1>
+        <div class="mt-3 pt-5 justify-content-end">
+            <div class="col-auto">
+                <button class="btn mb-2 me-1 btn-bank" style="background-color: #128748; color:white;"
+                    [routerLink]="['/panel/cuentas/crear']" type="button">Nueva cuenta</button>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row">
-    <div class="main-box col-5 ml-5" *ngFor="let item of cuentas" [routerLink]="['/panel/cuentas/', item._id]">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-6">
-                    <h2 class="mb-2 white-letters" *ngIf="item.saldo != null">$ {{item.saldo}}</h2>
-                    <h2 class="mb-2 white-letters" *ngIf="item.saldo == null">$ 0</h2>
-                </div>
-                <div class="col-5">
-                    <h4 class="white-letters"> {{item.nroCuenta}}</h4>
-                </div>
+    <div *ngFor="let item of cuentas">
+        <div class="col-md-11 ml-5">
+            <div class="card-body mt-1" style="padding: 4px !important; text-align: center;">
+                    <div class="row">
+                        <div class="btn-principal col-md-12 col-sm-12" *ngIf="item.principal">
+                            <h4 class="mb-2 white-letters" *ngIf="item.principal">Cuenta
+                                principal</h4>
+                        </div>
+                        <div class="btn-no-principal col-md-12 col-sm-12" *ngIf="!item.principal"
+                            (click)="establecer_principal(item._id)" style="cursor:pointer">
+                            <h4 class="mb-2 white-letters">Establecer
+                                principal</h4>
+                        </div>
+                    </div>
             </div>
-            <div class="row">
-                <div class="col-5">
-                    <span class="white-letters">Tipo de cuenta: </span>
-                    <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'ca'">Caja Ahorros
-                        Pesos</span>
-                    <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'cc'">Cuenta
-                        Corriente</span>
-                    <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'cch'">Cuenta Cheques</span>
-                    <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'cau'">Caja Ahorros
-                        Dolares</span>
+        </div>
+        <div class="main-box col-md-11 ml-5" [routerLink]="['/panel/cuentas/', item._id]">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="mb-2 white-letters" *ngIf="item.saldo != null">$ {{item.saldo}}</h2>
+                        <h2 class="mb-2 white-letters" *ngIf="item.saldo == null">$ 0</h2>
+                    </div>
+                    <div class="col-5">
+                        <h4 class="white-letters"> {{item.nroCuenta}}</h4>
+                    </div>
                 </div>
-                <div class="col-2">
-                    <span class="white-letters">CBU:
-                    </span>
-                    <span class="white-letters">{{item.cbu}}
-                    </span>
+                <div class="row">
+                    <div class="col-5">
+                        <span class="white-letters">Tipo de cuenta: </span>
+                        <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'ca'">Caja Ahorros
+                            Pesos</span>
+                        <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'cc'">Cuenta
+                            Corriente</span>
+                        <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'cch'">Cuenta
+                            Cheques</span>
+                        <span class="d-block mb-3 text-muted white-letters" *ngIf="item.tipo == 'cau'">Caja Ahorros
+                            Dolares</span>
+                    </div>
+                    <div class="col-2">
+                        <span class="white-letters">CBU:
+                        </span>
+                        <span class="white-letters">{{item.cbu}}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

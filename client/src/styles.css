@@ -1,10 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 body {
-  background-color: #DADADA;
+  background-color: #ececec;
 }
 
 .card {
-  background-color: #DADADA;
+  background-color: #ececec;
 }
 
 .btn-bank {
@@ -14,6 +14,10 @@ body {
   font-size: 20px;
   text-transform: uppercase;
 }
+.btn-bank:hover {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  background-color: #24a05e !important;
+}
 .btn-bank-alternative {
   background-color: #ffffff;
   color: #128748;
@@ -22,7 +26,10 @@ body {
   text-transform: uppercase;
   border: 1px solid !important;
 }
-
+.btn-bank-alternative:hover {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  background-color: #c4ddd0 !important;
+}
 @font-face {
   font-family: 'beway';
   src: url('../src/assets/fonts/Beway.otf') format('truetype');

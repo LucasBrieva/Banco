@@ -9,6 +9,32 @@
     -webkit-transition: all 1s;
     transition: all 1s;
 }
+.card-body{
+    width: 30rem !important;
+}
+.btn-principal {
+    width: 100%;
+    border-radius: 6px;
+    background-color: #149953;
+    margin-bottom: 1px;
+    border: 2px solid rgba(0, 0, 0, 0.04);
+    -webkit-transition: all 1s;
+    transition: all 1s;
+    margin-left: 5px;
+}
+.btn-no-principal{
+    width: 100%;
+    margin-left: 5px;
+    border-radius: 6px;
+    background-color: #149953;
+    margin-bottom: 1px;
+    border: 2px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+}
+.btn-no-principal:hover {
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+    background-color: #118246 !important;
+  }
 .white-letters{
     color: white !important;
 }

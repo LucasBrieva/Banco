@@ -96,24 +96,41 @@ const obtener_detalle_cuenta = async function (req, res) {
 const crear_cuenta = async function (req, res) {
     if (req.user) {
         let data = req.body;
+        let cuenta = await Cuenta.findOne({ cliente: data.cliente, tipo: data.tipo });
         let cuentas = await Cuenta.find({ cliente: data.cliente });
-        if (cuentas.length > 0) {
-            cuentas.forEach(async e => {
-                if (e.tipo == data.tipo) {
-                    fsHelper.add_log("CuentaController.crear_cuenta", "Ya tenes una cuenta de este tipo");
-                    res.status(400).send({ message: 'Ya tenes una cuenta de este tipo' })
-                }else{
-                    let reg = await Cuenta.create(data);
-                    res.status(200).send({ data: reg });
+        if (cuenta) {
+            fsHelper.add_log("CuentaController.crear_cuenta", "Ya cuenta con un usuario de este tipo");
+            res.status(400).send({ message: 'Ya cuenta con un usuario de este tipo' })
+        } else {
+            if (cuentas.length > 0) {
+                if (data.principal === 'true') {
+                    cuentas.forEach(async e => {
+                        if (e.principal) {
+                            await Cuenta.findByIdAndUpdate({ _id: e._id }, { principal: false });
+                        }
+                    });
                 }
-                if (data.principal) {
-                    if (e.principal) {
-                        await Cuenta.findByIdAndUpdate({ _id: e._id }, { principal: false });
-                    }
-                }
-            });
+                let reg = await Cuenta.create(data);
+                res.status(200).send({ data: reg });
+            }
         }
-        
+    } else {
+        fsHelper.add_log("CuentaController.obtener_cuenta_principal_cliente", "Usuario no identificado");
+        res.status(500).send({ message: 'NoAccess: Usuario no identificado' })
+    }
+}
+const cambiar_cuenta_principal = async function (req, res) {
+    if (req.user) {
+        let idCuenta = req.params["id"];
+        let idCliente = req.params["clienteId"];
+        let cuentas = await Cuenta.find({ cliente: idCliente });
+        cuentas.forEach(async e => {
+            if (e.principal) {
+                await Cuenta.findByIdAndUpdate({ _id: e._id }, { principal: false });
+            }
+        });
+        await Cuenta.findByIdAndUpdate({ _id: idCuenta }, { principal: true });
+        res.status(200).send({ message: "Cuenta principal modificada" });
     } else {
         fsHelper.add_log("CuentaController.obtener_cuenta_principal_cliente", "Usuario no identificado");
         res.status(500).send({ message: 'NoAccess: Usuario no identificado' })
@@ -168,5 +185,6 @@ module.exports = {
     obtener_cuenta_principal_cliente,
     obtener_cuentas_cliente,
     obtener_detalle_cuenta,
-    crear_cuenta
+    crear_cuenta,
+    cambiar_cuenta_principal
 }
