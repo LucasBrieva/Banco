@@ -48,16 +48,20 @@ export class CuentaService {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': token });
     return this._http.get(this.url + 'obtener_movimientos_dep_ret', { headers: headers });
   }
-  transferir(data:any, token:any):Observable<any>{
-    let headers = new HttpHeaders({'Content-Type':'application/json','Authorization': token});
-    return this._http.post(this.url+'transferir/', data, {headers:headers});
+  cambiar_cuenta_principal(id: any, userId: any, token: any): Observable<any> {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': token });
+    return this._http.get(this.url + 'cambiar_cuenta_principal/' + id + "/" + userId, { headers: headers });
   }
-  crear_cuenta(data:any, token:any):Observable<any>{
-    let headers = new HttpHeaders({'Content-Type':'application/json','Authorization': token});
-    return this._http.post(this.url+'crear_cuenta/', data, {headers:headers});
+  transferir(data: any, token: any): Observable<any> {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': token });
+    return this._http.post(this.url + 'transferir/', data, { headers: headers });
   }
-  crear_deposito_retiro(data:any, token:any):Observable<any>{
-    let headers = new HttpHeaders({'Content-Type':'application/json','Authorization': token});
-    return this._http.post(this.url+'crear_deposito_retiro/', data, {headers:headers});
+  crear_cuenta(data: any, token: any): Observable<any> {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': token });
+    return this._http.post(this.url + 'crear_cuenta/', data, { headers: headers });
+  }
+  crear_deposito_retiro(data: any, token: any): Observable<any> {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': token });
+    return this._http.post(this.url + 'crear_deposito_retiro/', data, { headers: headers });
   }
 }
