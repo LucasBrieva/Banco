@@ -1,7 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
 body {
-    background-color: #DADADA;
-  }
-  .card{
-    background-color: #DADADA;
-  }
+  background-color: #DADADA;
+}
+
+.card {
+  background-color: #DADADA;
+}
+
+.btn-bank {
+  background-color: #128748;
+  color: white;
+  font-family: beway;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+.btn-bank-alternative {
+  background-color: #ffffff;
+  color: #128748;
+  font-family: beway;
+  font-size: 20px;
+  text-transform: uppercase;
+  border: 1px solid !important;
+}
+
+@font-face {
+  font-family: 'beway';
+  src: url('../src/assets/fonts/Beway.otf') format('truetype');
+}
