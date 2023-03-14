@@ -99,16 +99,16 @@ const crear_cuenta = async function (req, res) {
         let cuenta = await Cuenta.findOne({ cliente: data.cliente, tipo: data.tipo });
         let cuentas = await Cuenta.find({ cliente: data.cliente });
         if (cuenta) {
-            fsHelper.add_log("CuentaController.crear_cuenta", "Ya cuenta con un usuario de este tipo");
-            res.status(400).send({ message: 'Ya cuenta con un usuario de este tipo' })
+            fsHelper.add_log("CuentaController.crear_cuenta", "Ya cuenta con una cuenta de este tipo");
+            res.status(400).send({ message: 'Ya cuenta con una cuenta de este tipo' })
         } else {
             if (cuentas.length > 0) {
                 if (data.principal === 'true') {
-                    cuentas.forEach(async e => {
+                    for (let e of cuentas) {
                         if (e.principal) {
                             await Cuenta.findByIdAndUpdate({ _id: e._id }, { principal: false });
                         }
-                    });
+                    }
                 }
                 let reg = await Cuenta.create(data);
                 res.status(200).send({ data: reg });

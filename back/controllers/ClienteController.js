@@ -56,39 +56,48 @@ const registro_cliente = async function (req, res) {
 const login_cliente = async function (req, res) {
     var data = req.body;
     var cliente_arr = [];
-
-    cliente_arr = await Cliente.find({ email: data.email });
-    if (cliente_arr.length == 0) {
-        res.status(400).send({ message: "No se encontró el correo", data: undefined });
-
-    } else {
-        let user = cliente_arr[0];
-
-        bcrypt.compare(data.password, user.password, async function (error, check) {
-            if (check) {
-                if (user.dadoBaja == "false") {
-                    res.status(200).send({
-                        data: user,
-                        token: jwt.createToken(user)
-                    });
+    if(data.password){
+        cliente_arr = await Cliente.find({ email: data.email });
+        if (cliente_arr.length == 0) {
+            res.status(400).send({ message: "No se encontró el correo", data: undefined });
+    
+        } else {
+            let user = cliente_arr[0];
+    
+            bcrypt.compare(data.password, user.password, async function (error, check) {
+                if (check) {
+                    if (user.dadoBaja == "false") {
+                        res.status(200).send({
+                            data: user,
+                            token: jwt.createToken(user)
+                        });
+                    }
+                    else {
+                        res.status(400).send({ message: "El usuario está dado de baja", data: undefined });
+                    }
                 }
                 else {
-                    res.status(400).send({ message: "El usuario está dado de baja", data: undefined });
+                    res.status(400).send({ message: "La contraseña no coincide", data: undefined });
                 }
-            }
-            else {
-                res.status(400).send({ message: "La contraseña no coincide", data: undefined });
-            }
-        });
-
+            });
+    
+        }
+    }
+    else{
+        res.status(400).send({ message: "No se proporcionó la contraseña", data: undefined });
     }
 }
 
 const obtener_cliente_id = async function (req, res) {
     if (req.user) {
         var id = req.params['id'];
-        var reg = await Cliente.findById({ _id: id });
-        res.status(200).send({ data: reg });
+        var cliente = await Cliente.findById({ _id: id });
+        if(cliente){
+            res.status(200).send({ data: cliente });
+        }else{
+            fsHelper.add_log("ClienteController.obtener_cliente_id", "No se encontro el usuario");
+            res.status(400).send({ message: "No se encontro el usuario" });
+        }
     } else {
         fsHelper.add_log("ClienteController.obtener_cliente_id", "Usuario no identificado");
         res.status(500).send({ message: 'NoAccess: Usuario no identificado' })

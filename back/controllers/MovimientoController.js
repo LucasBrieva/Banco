@@ -87,8 +87,8 @@ const obtener_movimientos_cuenta_principal = async function (req, res) {
             res.status(500).send({ message: "Error: " + error })
         }
     } else {
-        fsHelper.add_log("MovimientoController.obtener_movimientos_cuenta_principal", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
-        res.status(500).send({ message: 'NoAccess' })
+        fsHelper.add_log("MovimientoController.obtener_movimientos_cuenta_principal", "Usuario no identificado");
+        res.status(500).send({ message: 'NoAccess: Usuario no identificado' })
     }
 }
 
@@ -114,14 +114,13 @@ const obtener_movimientos_cuenta_id = async function (req, res) {
         }
         res.status(200).send({ data: movimientos });
     } else {
-        fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
+        fsHelper.add_log("MovimientoController.obtener_movimientos_cuenta_id", "Usuario no identificado");
         res.status(500).send({ message: 'NoAccess' })
     }
 }
 
 const obtener_movimientos_transferencias = async function (req, res) {
     if (req.user) {
-        //TODO: Hacer prueba agregando array de movimiento a cuenta.
         let movimientos = await Movimiento.find({
             $or: [
                 { tipo: new RegExp(tipoMovimiento.tipoMovimiento.PROPIA, 'i') },
@@ -130,14 +129,13 @@ const obtener_movimientos_transferencias = async function (req, res) {
         }).limit(10);
         res.status(200).send({ data: movimientos });
     } else {
-        fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
+        fsHelper.add_log("MovimientoController.obtener_movimientos_transferencias", "Usuario no identificado");
         res.status(500).send({ message: 'NoAccess' })
     }
 }
 
 const obtener_movimientos_dep_ret = async function (req, res) {
     if (req.user) {
-        //TODO: Hacer prueba agregando array de movimiento a cuenta.
         let movimientos = await Movimiento.find({
             $or: [
                 { tipo: new RegExp(tipoMovimiento.tipoMovimiento.DEPOSITO, 'i') },
@@ -146,7 +144,7 @@ const obtener_movimientos_dep_ret = async function (req, res) {
         }).limit(10);
         res.status(200).send({ data: movimientos });
     } else {
-        fsHelper.add_log("ClienteController.js", "Hubo un error en ClienteController.listar_clientes_filtro_admin");
+        fsHelper.add_log("MovimientoController.obtener_movimientos_dep_ret", "Usuario no identificado");
         res.status(500).send({ message: 'NoAccess' })
     }
 }
@@ -155,12 +153,10 @@ const transferir = async function (req, res) {
     if (req.user) {
         var data = req.body;
         try {
-            //Seteo las variables que no se solicitan en el front
             data.isIngreso = false;
             if (data.tipo == tipoMovimiento.tipoMovimiento.TERCEROS) data.descripcion = "Transferencia a terceros";
             else data.descripcion = "Transferencia a cuenta propia";
 
-            //Voy a buscar la información de la cuenta origen
             var cuentaOrigen = await Cuenta.findById({ _id: data.cuenta });
             var msjValidacion = await validateData(data, cuentaOrigen);
             if (Object.keys(msjValidacion).length === 0) {
@@ -193,7 +189,6 @@ const crear_deposito_retiro = async function(req,res){
     if (req.user) {
         var data = req.body;
         try {
-            //Voy a buscar la información de la cuenta origen
             var cuentaOrigen = await Cuenta.findById({ _id: data.cuenta });
             var msjValidacion = await validateData(data, cuentaOrigen);
             if (Object.keys(msjValidacion).length === 0) {
@@ -211,16 +206,16 @@ const crear_deposito_retiro = async function(req,res){
                 res.status(200).send({ data: reg });
             }
             else {
-                fsHelper.add_log("CuentaController.transferir", msjValidacion);
+                fsHelper.add_log("CuentaController.crear_deposito_retiro", msjValidacion);
                 res.status(400).send({ message: msjValidacion, data: undefined });
             }
         } catch (error) {
-            fsHelper.add_log("CuentaController.transferir", msjValidacion);
+            fsHelper.add_log("CuentaController.crear_deposito_retiro", msjValidacion);
             res.status(500).send({ message: msjValidacion, data: undefined });
         }
     }
     else {
-        fsHelper.add_log("CuentaController.transferir", "Usuario no identificado");
+        fsHelper.add_log("CuentaController.crear_deposito_retiro", "Usuario no identificado");
         res.status(500).send({ message: 'NoAccess: Usuario no identificado', data: undefined });
     }
 }
