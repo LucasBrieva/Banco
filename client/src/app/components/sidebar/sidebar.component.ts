@@ -3,6 +3,7 @@ import { ClienteService } from 'src/app/services/cliente.service';
 import { CuentaService } from 'src/app/services/cuenta.service';
 import { GLOBAL } from 'src/app/services/GLOBAL';
 import { HelperService } from 'src/app/services/helper.service';
+import { Router } from '@angular/router';
 
 declare var $: any;
 
@@ -21,7 +22,8 @@ export class SidebarComponent implements OnInit {
   constructor(
     private _clienteService: ClienteService,
     private _cuentaService: CuentaService,
-    private _helperService: HelperService
+    private _helperService: HelperService,
+    private _router: Router
   ) {
     this.url = GLOBAL.url;
     this.cliente._id = localStorage.getItem('_id');
@@ -66,5 +68,10 @@ export class SidebarComponent implements OnInit {
     else {
       this._helperService.iziToast('Favor de seleccionar una cuenta', "ERROR", false);
     }
+  }
+  logOut(){
+    localStorage.clear();
+    this.cliente = undefined;
+    this._router.navigate(['/login']);
   }
 }
