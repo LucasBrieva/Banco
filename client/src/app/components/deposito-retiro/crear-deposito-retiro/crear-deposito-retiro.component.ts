@@ -18,6 +18,7 @@ export class CrearDepositoRetiroComponent implements OnInit {
     tipo: 'D',
     cuenta: ''
   };
+  public msjs: any = {};
   constructor(
     private _cuentaService: CuentaService,
     private _helperService: HelperService,
@@ -31,11 +32,10 @@ export class CrearDepositoRetiroComponent implements OnInit {
         this.cuentas = res.data;
       },
       err => {
-        console.log(err);
+        this._helperService.iziToast(err.error.message, "ERROR", false);
       }
     );
   }
-
   ngOnInit(): void {
   }
   generar(generarForm: any) {
@@ -54,7 +54,21 @@ export class CrearDepositoRetiroComponent implements OnInit {
           this._router.navigate(['/panel/depositosretiros']);
         },
         err=>{
-
+          if (err.error.message.cuenta) {
+            var msj = document.getElementById('msjCuenta') as HTMLSpanElement;
+            msj.hidden = false;
+            this.msjs.cuenta = err.error.message.cuenta;
+          };
+          if (err.error.message.tipo) {
+            var msj = document.getElementById('msjTipo') as HTMLSpanElement;
+            msj.hidden = false;
+            this.msjs.tipo = err.error.message.tipo;
+          };
+          if (err.error.message.monto) {
+            var msj = document.getElementById('msjMonto') as HTMLSpanElement;
+            msj.hidden = false;
+            this.msjs.monto = err.error.message.monto;
+          }
         }
       )
     } else {

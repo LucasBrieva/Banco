@@ -25,7 +25,7 @@ export class CrearTransferenciaComponent implements OnInit {
     private _cuentaService: CuentaService,
     private _helperService: HelperService,
     private _router: Router
-    ) {
+  ) {
     this.url = GLOBAL.url;
     this.token = localStorage.getItem('token');
     this.id_cliente = localStorage.getItem('_id');
@@ -34,7 +34,7 @@ export class CrearTransferenciaComponent implements OnInit {
         this.cuentas = res.data;
       },
       err => {
-        console.log(err);
+        this._helperService.iziToast(err.error.message, "ERROR", false);
       }
     );
   }
@@ -73,9 +73,10 @@ export class CrearTransferenciaComponent implements OnInit {
       )
     }
     else {
+      this._helperService.iziToast('Falta que ingrese algún dato, verifique por favor.', 'ERROR', true);
     }
   }
-  limpiarCuenta(){
+  limpiarCuenta() {
     this.transferencia.cbuDestino = '';
   }
 }

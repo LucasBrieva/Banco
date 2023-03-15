@@ -297,7 +297,7 @@ async function validateData(data, cuenta) {
             }
             else if (!(data.isIngreso.toString().toLowerCase() === 'true')) {
                 if (Number(cuenta.saldo) < Number(data.monto)) {
-                    msj.monto = "El monto que esta intentando transferir es superior a lo que hay en la cuenta.";
+                    msj.monto = "El monto que esta intentando transferir/retirar es superior a lo que hay en la cuenta.";
                 }
             }
         }

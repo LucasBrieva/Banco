@@ -27,7 +27,7 @@ export class IndexCuentasComponent implements OnInit {
         this.cuentas = res.data;
       },
       err => {
-        console.log(err);
+        this._helperService.iziToast(err.error.message, "ERROR", false);
       }
     );
   }
@@ -52,7 +52,7 @@ export class IndexCuentasComponent implements OnInit {
         this.cuentas = res.data;
       },
       err => {
-        console.log(err);
+        this._helperService.iziToast(err.error.message, "ERROR", false);
       }
     );
   }

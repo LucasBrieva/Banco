@@ -43,7 +43,7 @@
                                 <label for="rdo-2" class="cursor">CUENTA DE TERCERO</label>
                             </label>
                             <label for="rdo-1" class="btn-radio cursor">
-                                <input type="radio" id="rdo-1" value="P" name="tipo" [(ngModel)]="transferencia.tipo">
+                                <input type="radio" id="rdo-1" value="P" name="tipo" [(ngModel)]="transferencia.tipo" (click)="limpiarCuenta()">
                                 <svg width="20px" height="20px" viewBox="0 0 20 20">
                                     <circle cx="10" cy="10" r="9"></circle>
                                     <path
@@ -64,7 +64,7 @@
                         <div class="col-lg-6 form-group">
                             <h5 for="">INGRESA EL CBU</h5>
                             <input type="text" class="form-control" style="font-size: 16px;" name="cbuDestino"
-                                [(ngModel)]="transferencia.cbuDestino" placeholder="CBU" />
+                                [(ngModel)]="transferencia.cbuDestino" placeholder="CBU" maxlength="22" />
                             <span style="color:red; font-size: 11px;" id="msjCbu" hidden>{{msjs.cbuDestino}}</span>
                         </div>
                     </ng-container>

@@ -33,7 +33,7 @@ export class CrearCuentasComponent implements OnInit {
         this.cliente = res.data;
       },
       err=>{
-
+        this._helperService.iziToast(err.error.message, "ERROR", false);
       }
     )
   }
@@ -53,7 +53,7 @@ export class CrearCuentasComponent implements OnInit {
           this._router.navigate(['/panel/cuentas']);
         },
         err => {
-          this._helperService.iziToast('YA TENES UNA CUENTA DE ESTE TIPO', 'ERROR', false);
+          this._helperService.iziToast(err.error.message, "ERROR", false);
         }
       )
     }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CuentaService } from 'src/app/services/cuenta.service';
 import { GLOBAL } from 'src/app/services/GLOBAL';
+import { HelperService } from 'src/app/services/helper.service';
 
 @Component({
   selector: 'app-inicio',
@@ -15,7 +16,8 @@ export class InicioComponent implements OnInit {
   public cuentas: Array<any> = [];
   public movimientos: Array<any> = [];
   constructor(
-    private _cuentaService: CuentaService
+    private _cuentaService: CuentaService,
+    private _helperService: HelperService
   ) {
     this.url = GLOBAL.url;
     this.token = localStorage.getItem('token');
@@ -25,7 +27,7 @@ export class InicioComponent implements OnInit {
         this.cuentas = res.data;
       },
       err => {
-        console.log(err);
+        this._helperService.iziToast(err.error.message, "ERROR", false);
         this.cuentas = [];
       }
     );
@@ -34,7 +36,7 @@ export class InicioComponent implements OnInit {
         this.movimientos = res.data;
       },
       err => {
-        console.log(err);
+        this._helperService.iziToast(err.error.message, "ERROR", false);
       }
     );
   }
