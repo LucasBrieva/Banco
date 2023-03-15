@@ -34,22 +34,21 @@ export class SidebarComponent implements OnInit {
       },
       err => {
       }
-    )
+    );
+    this.obtener_cuentas_cliente();
   }
 
   ngOnInit(): void {
   }
   hazteVip() {
-    this._cuentaService.obtener_cuentas_cliente(this.cliente._id, this.token).subscribe(
-      res => {
-        this.cuentas = res.data;
-      },
-      err => {
-        console.log(err);
-      }
-    );
-    $('#modalVip').modal('show');
-    $('.modal-backdrop').addClass('show');
+    this.obtener_cuentas_cliente();
+    if(this.cuentas.length > 0){
+      $('#modalVip').modal('show');
+      $('.modal-backdrop').addClass('show');
+    }
+    else{
+      this._helperService.iziToast('Favor de crear una cuenta primero', "ERROR", false);
+    }
   }
   actualizar_tipo_cliente() {
     if (this.cuentaId != '') {
@@ -73,5 +72,15 @@ export class SidebarComponent implements OnInit {
     localStorage.clear();
     this.cliente = undefined;
     this._router.navigate(['/login']);
+  }
+  obtener_cuentas_cliente(){
+    this._cuentaService.obtener_cuentas_cliente(this.cliente._id, this.token).subscribe(
+      res => {
+        this.cuentas = res.data;
+      },
+      err => {
+        this._helperService.iziToast(err.error.message, "ERROR", false);
+      }
+    );
   }
 }

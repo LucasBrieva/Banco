@@ -110,9 +110,9 @@ const crear_cuenta = async function (req, res) {
                         }
                     }
                 }
-                let reg = await Cuenta.create(data);
-                res.status(200).send({ data: reg });
             }
+            let reg = await Cuenta.create(data);
+            res.status(200).send({ data: reg });
         }
     } else {
         fsHelper.add_log("CuentaController.obtener_cuenta_principal_cliente", "Usuario no identificado");

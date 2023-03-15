@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit {
 
         },
         error => {
-          console.log(error);
+          this._helperService.iziToast('No se encontro al usuario en la base de datos', "ERROR", false);
         }
       )
     } else {
@@ -107,7 +107,7 @@ export class LoginComponent implements OnInit {
           }, 2000);
         },
         err => {
-          this._helperService.iziToast('Hubo un error al crear la cuenta', "ERROR", false);
+          this._helperService.iziToast(err.error.message, "ERROR", false);
         }
       )
     } else {
